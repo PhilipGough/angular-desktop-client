@@ -1,0 +1,23 @@
+.DS_Store
+
+# Ignore bundler config
+/.bundle
+
+# Ignore all logfiles and tempfiles.
+/log/*.log
+/tmp
+
+/dist
+/.tmp
+/.sass-cache
+/node_modules
+
+# Use https instead of git and git+ssh
+
+[url "https://github.com/"]
+
+  insteadOf = git://github.com/
+
+[url "https://github.com/"]
+
+  insteadOf = git@github.com:

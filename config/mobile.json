@@ -1,0 +1,4 @@
+{
+  "mobile": true,
+  "build_destination": "./cordova/www/"
+}
