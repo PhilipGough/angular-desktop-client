@@ -3,12 +3,15 @@
 var BetterBetting = angular.module('BetterBetting', [
   'ui.bootstrap',
   'ui.router',
+  'uiRouterStyles',
   'ngCookies',
   'pascalprecht.translate',
   'BetterBetting.home',
   'BetterBetting.login',
   'BetterBetting.register',
-  'flash'
+  'BetterBetting.pundit',
+  'flash',
+  'ngMessages'
 ]);
 
 
@@ -19,6 +22,17 @@ BetterBetting.config(function($stateProvider, $locationProvider,$httpProvider,
   //allow local assets CSP
   $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|chrome-extension):|data:image\//);
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|chrome-extension):/);
+
+  $stateProvider.state('pundit', {
+    url: '/pundit',
+    data : {
+      restricted: true,
+      css: 'bower_components/rdash-ui/dist/css/rdash.min.css'
+    },
+    abstract: true,
+    templateUrl: 'partials/pundit/pundit.tpl.html',
+    controller: 'PunditHomeCtrl'
+  });
 
   $stateProvider.state('preAuth', {
     url: '',

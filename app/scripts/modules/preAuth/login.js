@@ -2,8 +2,8 @@
 angular.module('BetterBetting.login', [])
 .config(function($stateProvider){
   $stateProvider
-    .state('preAuth.pagetwo', {
-      url: '/pagetwo',
+    .state('preAuth.login', {
+      url: '/login',
       data : { title: 'Login' },
       views: {
         'layoutMainContent': {
@@ -14,16 +14,15 @@ angular.module('BetterBetting.login', [])
     });
 })
 
-.controller('LoginCtrl', [ '$scope', 'Flash', 'authFactory',
-  function($scope, Flash, authFactory){
+.controller('LoginCtrl', [ '$scope', 'Flash', 'authFactory', '$state',
+  function($scope, Flash, authFactory, $state){
 
   $scope.login = function(user) {
     authFactory.getAuthToken(user.email, user.password)
-
     .success(function(response) {
         localStorage.setItem('betterTradingToken', response);
         authFactory.setUserData(response);
-        console.log(authFactory.getUserData());
+        routeUser(authFactory.getUserData());
     })
     .error(function(response, status) {
       var message = '<strong>Login Failed!</strong> Username or password incorrect';
@@ -36,6 +35,16 @@ angular.module('BetterBetting.login', [])
     email:  '',
     password: ''
   };
+
+  function routeUser(userData) {
+    console.log(userData)
+    if(userData.hasPermission === true){
+      $state.go('pundit.dashboard');
+    }
+    else {
+      $state.go('user.home');
+    }
+  }
 
 
 }]);
