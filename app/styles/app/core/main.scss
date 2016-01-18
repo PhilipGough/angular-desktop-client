@@ -21,11 +21,14 @@ footer {
 }
 
 @media(min-width:768px) {
-    body {
-        padding-top: 100px;
+    #normal {
+        padding-top: 80px;
     }
 
+    #pundit {
+        padding-top: 0px;
+    }
     .navbar-fixed-top .navbar-brand {
-        padding: 15px 0;
+        padding: 15px 10px;
     }
 }

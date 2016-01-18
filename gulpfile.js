@@ -171,7 +171,7 @@ gulp.task('tdd', function (done) {
 
 //Development Livereload and Server
 gulp.task('develop', function(cb) {
-  runSequence(['clean'], ['styles'], ['preprocessDev'], ['serve'], ['tdd'], cb);
+  runSequence(['clean'], ['styles'], ['preprocessDev'], ['serve'], cb);
 });
 
 //Clean folders
