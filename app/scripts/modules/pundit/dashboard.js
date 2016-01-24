@@ -16,7 +16,7 @@ angular.module('BetterBetting.pundit', [])
 
 .controller('PunditHomeCtrl', ['$scope', '$document', function($scope, $document) {
     $scope.toggle = true;
-    $document.find('body')[0].id = 'pundit'
+    $document.find('body')[0].id = 'pundit';
 
     $scope.toggleSidebar = function() {
         $scope.toggle = !$scope.toggle;

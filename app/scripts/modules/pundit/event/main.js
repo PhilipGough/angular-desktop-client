@@ -13,8 +13,8 @@ angular.module('BetterBetting.pundit.event', [])
   });
 })
 
-.controller('PunditEventCtrl', ['$scope', 'betfairFactory', 'eventFactory', 'Flash',
-                    function($scope, betfairFactory, eventFactory, Flash) {
+.controller('PunditEventCtrl', ['$scope', 'betfairFactory', 'eventFactory', 'Flash', '$state',
+                    function($scope, betfairFactory, eventFactory, Flash, $state) {
   var vm = this;
   (function init() {
   vm.listReady = false;
@@ -30,45 +30,43 @@ angular.module('BetterBetting.pundit.event', [])
 })();
 
   betfairFactory.callAPI('eventList').then(function(data) {
-    vm.sportGenres = data
+    vm.sportGenres = data;
     vm.sportsList = true;
     vm.listReady = true;
-  },function(error) {
+  },function() {
       var message = '<strong>Error!</strong> Cannot retrieve data at this time';
       Flash.create('danger', message, 'custom-class');
   });
 
    $scope.$watch(function watchSelectedSport( scope ) {
       return( vm.selectedSport );
-    },  function handleSportChange( newValue, oldValue ) {
+    },  function handleSportChange( newValue ) {
         if(angular.isDefined(newValue) && newValue !== null){
            eventFactory.setSportGenre(newValue);
-           if(newValue.eventType.name == 'Soccer') {
+           if(newValue.eventType.name === 'Soccer') {
               betfairFactory.callAPI('competitionList')
               .then(function(data) {
-                  vm.footBallCompetitions = data
+                  vm.footBallCompetitions = data;
                   vm.showVenue = null;
                   vm.showCompList = true;
                   vm.showVenueList = false;
                   vm.apiReady = true;
 
-                },function(error) {
+                },function() {
                   var message = '<strong>Error!</strong> Cannot retrieve data at this time';
                   Flash.create('danger', message, 'custom-class');
             });
            } else {
             betfairFactory.callAPI('venues')
               .then(function(data) {
-                  vm.racingVenues = data
-                  //eventFactory.setRacingVenue(data);
+                  vm.racingVenues = data;
                   vm.selectedComp = null;
                   vm.showCompList = false;
                   vm.showVenueList = true;
                   vm.apiReady = true;
-                },function(error) {
+                },function() {
                   var message = '<strong>Error!</strong> Cannot retrieve data at this time';
                   Flash.create('danger', message, 'custom-class');
-                  console.log('The request failed with response ' + error );
             });
            }
         }
@@ -83,7 +81,7 @@ angular.module('BetterBetting.pundit.event', [])
       vm.minDate  = yesterday;
       var nextweek = new Date(vm.beforeDate.getFullYear(), vm.beforeDate.getMonth(), vm.beforeDate.getDate()+7);
       vm.beforeDate = nextweek;
-    }
+    };
 
   vm.initilaiseCalenders = function() {
     vm.afterDate = new Date();
@@ -110,12 +108,12 @@ angular.module('BetterBetting.pundit.event', [])
   vm.afterTimeChange = function (calenderRef) {
     if(calenderRef === 1){
       this.afterDateSet = true;
-      eventFactory.setAfterTimeDate(vm.afterDate, vm.afterTime)
+      eventFactory.setAfterTimeDate(vm.afterDate, vm.afterTime);
     } else {
         this.beforeDateSet = true;
-        eventFactory.setBeforeTimeDate(vm.beforeDate, vm.beforeTime)
+        eventFactory.setBeforeTimeDate(vm.beforeDate, vm.beforeTime);
     }
-  }
+  };
 
   vm.open = function($event, calender) {
     if(calender === 1){
@@ -127,10 +125,10 @@ angular.module('BetterBetting.pundit.event', [])
 
   vm.continue = function() {
      if(! vm.afterDateSet){
-        eventFactory.setAfterTimeDate(vm.afterDate, vm.afterTime)
+        eventFactory.setAfterTimeDate(vm.afterDate, vm.afterTime);
     }
     if(! vm.beforeDateSet){
-       eventFactory.setBeforeTimeDate(vm.beforeDate, vm.beforeTime)
+       eventFactory.setBeforeTimeDate(vm.beforeDate, vm.beforeTime);
      }
      if(vm.selectedSport.eventType.name === 'Soccer') {
         eventFactory.setTextQuery(vm.textQuery);
@@ -147,11 +145,17 @@ angular.module('BetterBetting.pundit.event', [])
     .then(function(data) {
       console.log(data);
       if(1 > data.length) {
-        console.log('You made it son')
+       var message = 'No events match the information you have provided';
+          Flash.create('danger', message, 'custom-class');
       }
-    }, function(error) {
+      else {
+        eventFactory.setResultsSet(data);
+        console.log('Hi');
+        $state.go('pundit.selection');
+      }
+    }, function() {
           var message = '<strong>Error!</strong> Cannot retrieve data at this time';
           Flash.create('danger', message, 'custom-class');
     });
-  }
+  };
 }]);

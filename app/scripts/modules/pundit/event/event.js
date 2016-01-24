@@ -1,7 +1,7 @@
 'use strict';
-angular.module('BetterBetting.pundit.event.selection', [])
+angular.module('BetterBetting.pundit.selection', [])
 .config(function($stateProvider){
-  $stateProvider.state('pundit.event.selection', {
+  $stateProvider.state('pundit.selection', {
     url: '/event/select',
     data : { title: 'Events' },
     views: {

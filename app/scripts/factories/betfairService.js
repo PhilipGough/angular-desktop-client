@@ -1,3 +1,4 @@
+'use strict';
 angular.module('BetterBetting.pundit')
 
 .factory('betfairFactory', ['$http', '$rootScope', function($http, $rootScope) {
@@ -18,10 +19,9 @@ angular.module('BetterBetting.pundit')
       return response.data;
     });
 
-  }
+  };
 
     betfairClient.callAPIPost = function(endpoint, payload) {
-      console.log(payload)
     return $http({
       method: 'post',
       url: $rootScope.baseURL + endpoint,
@@ -31,8 +31,7 @@ angular.module('BetterBetting.pundit')
     .then(function(response) {
       return response.data;
     });
-
-  }
+  };
 
   return betfairClient;
 }]);

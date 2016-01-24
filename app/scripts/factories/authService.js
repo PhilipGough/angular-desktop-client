@@ -1,3 +1,4 @@
+'use strict';
 angular.module('BetterBetting')
 
 .factory('authFactory', [ '$window', '$http', '$rootScope',

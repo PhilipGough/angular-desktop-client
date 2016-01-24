@@ -38,7 +38,7 @@ angular.module('BetterBetting.login', [])
 
   function routeUser(userData) {
     console.log(userData)
-    if(userData.hasPermission === true){
+    if(userData.hasPermission === 'True'){
       $state.go('pundit.dashboard');
     }
     else {
