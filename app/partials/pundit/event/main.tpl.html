@@ -1,0 +1,93 @@
+
+<div  ng-controller="PunditEventCtrl as vm" id="content-wrapper">
+  <div class="page-content">
+    <div class="row" ng-if="vm.listReady">
+      <div class="col-lg-6 col-md-6 col-xs-12">
+        <h4>Select the sport you want to create an event for</h4>
+        <form ui-if="sportsList">
+          <!-- options from collection -->
+          <ol id="dynamic-options" class="nya-bs-select" title="Choose a sport" ng-model="vm.selectedSport">
+            <li nya-bs-option="sport in vm.sportGenres">
+              <a>{{ sport.eventType.name }}</a>
+            </li>
+          </ol>
+        </form>
+      </div>
+    </div>
+    <div flash-message="5000" ></div>
+    <div ng-if="vm.selectedSport && vm.apiReady">
+      <hr>
+      <div class="row">
+        <div class="col-xs-4 col-md-4 col-lg-4">
+          <h5>Select a minimum starting time</h5>
+          <p class="input-group">
+            <input type="text" class="form-control" datepicker-popup="{{vm.format}}" ng-model="vm.afterDate" is-open="vm.status.opened" min-date="vm.minDate" ng-change="vm.afterTimeChange(1)" close-text="Close" />
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="vm.open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </p>
+        </div>
+        <div class="col-lg-1 col-md-1 col-xs-1">
+          <timepicker ng-model="vm.afterTime" ng-change="vm.afterTimeChange(1)"show-meridian="false" hour-step="1" minute-step="5"></timepicker>
+        </div>
+        <div ng-if="vm.showCompList"class="col-lg-4 col-md-4 col-xs-4">
+          <h5>Filter results by competition</h5>
+          <form ui-if="sportsList">
+            <!-- options from collection -->
+            <ol id="dynamic-options" class="nya-bs-select" title="Choose a competition" ng-model="vm.selectedComp">
+              <li nya-bs-option="comp in vm.footBallCompetitions | orderBy:'competition.name'">
+                <a>{{ comp.competition.name }}</a>
+              </li>
+            </ol>
+          </form>
+        </div>
+        <div ng-if="vm.showVenueList"class="col-lg-7 col-md-7 col-xs-7">
+          <h5>Filter results by venues</h5>
+          <form class="form-inline">
+            <ol id="values-example" class="nya-bs-select" title="Choose a venue" ng-model="vm.selectedVenues" data-selected-text-format="values" multiple>
+              <li nya-bs-option="venue in vm.racingVenues | orderBy:'-marketCount'">
+                <a>
+                 {{ venue.venue }}
+                 <span class="glyphicon glyphicon-ok check-mark"></span>
+               </a>
+             </li>
+           </ol>
+         </form>
+       </div>
+     </div>
+     <div class="row">
+      <div class="col-xs-4 col-md-4 col-lg-4">
+        <h5>Select a maximum end date</h5>
+        <p class="input-group">
+          <input type="text" class="form-control" datepicker-popup="{{vm.format}}" ng-model="vm.beforeDate" is-open="vm.status.openedTwo" min-date="vm.minDate" ng-change="vm.afterTimeChange(2)" close-text="Close" />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="vm.open($event,2)"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+      </div>
+      <div class="col-lg-1 col-md-1 col-xs-1">
+        <timepicker ng-model="vm.beforeTime" ng-change="vm.afterTimeChange(2)"show-meridian="false" hour-step="1" minute-step="5"></timepicker>
+      </div>
+      <div ng-if="vm.showCompList"class="col-lg-4 col-md-4 col-xs-4">
+        <h5>Filter results by team name</h5>
+        <div class="input-group">
+          <input type="text" ng-model="vm.textQuery" class="form-control" placeholder="Optional Text Query">
+        </div>
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="col-xs-8 col-md-8 col-lg-8">
+        <button type="submit" ng-click="vm.continue()" class="btn btn -lg btn-primary"><i class="fa fa-arrow-circle-right"></i> Continue</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
