@@ -216,7 +216,7 @@ html {
   overflow-y: scroll;
 }
 body {
-  background: #f3f3f3;
+  background: #ecf2f9;
   font-family: "Montserrat";
   color: #333333 !important;
 }
@@ -495,3 +495,4 @@ ul.sidebar .sidebar-list .menu-icon {
   font-size: 28px;
   display: block;
 }
+

@@ -1,0 +1,56 @@
+<div class="modal-header">
+  <h3 class="modal-title">Publish Event</h3>
+</div>
+
+
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-6 col-lg-6">
+      <u> Event/Market Details</u>
+        <div ng-repeat="data in vm.data.metaData">
+          <table>
+           <tr ng-repeat="(key, value) in data">
+            <td>{{key}}&nbsp;-&nbsp; </td> <td> {{value}}</td>
+           </tr>
+          </table>
+        </div>
+    </div>
+
+      <div class="col-md-6 col-lg-6">
+        <form role="form">
+          <div class="form-group">
+            <label for="comment">Comment:</label>
+            <textarea class="form-control" ng-model="vm.data.punditComment" rows="5" id="comment"></textarea>
+          </div>
+        </form>
+      </div>
+
+  </div>
+
+  <hr>
+
+  <div class="row">
+   <div class="col-md-6 col-lg-6" ng-if="vm.data.runnerData">
+      <u> Runner Details</u> <img ng-src="{{vm.data.colorSrc}}"/>
+          <table>
+            <tr ng-repeat="(key, value) in vm.data.runnerData">
+                <td>{{key}}&nbsp;-&nbsp; </td> <td> {{value}}</td>
+            </tr>
+          </table>
+   </div>
+   <div class="col-md-6 col-lg-6" ng-if="vm.data.priceData">
+      <u> Price Details</u>
+          <table>
+            <tr ng-repeat="(key, value) in vm.data.priceData">
+                <td>{{key}}&nbsp;-&nbsp; </td> <td> {{value}}</td>
+            </tr>
+          </table>
+   </div>
+  </div>
+
+ </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-success" ng-click="vm.publishEvent()">Publish Event</button>
+      <button class="btn" ng-click="$close()">Cancel</button>
+    </div>

@@ -10,9 +10,10 @@
     <meta name="description" content="">
     <title ng-bind="$state.current.data.title"></title>
 
-    <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link href="bower_components/nya-bootstrap-select/dist/css/nya-bs-select.css" rel="stylesheet">
+
     <!--<link rel="stylesheet" href="/bower_components/rdash-ui/dist/css/rdash.min.css">-->
     <base href="/">
     <!-- App Icons -->
@@ -54,6 +55,7 @@
       <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
       <script src="bower_components/angular-flash-alert/dist/angular-flash.min.js"></script>
       <script src="bower_components/nya-bootstrap-select/dist/js/nya-bs-select.js"></script>
+
     <!-- endbuild -->
     <!-- build:js scripts/app.js -->
       <script src="scripts/modules/preAuth/home.js"></script>
@@ -62,12 +64,19 @@
       <script src="scripts/modules/pundit/dashboard.js"></script>
       <script src="scripts/modules/pundit/event/main.js"></script>
       <script src="scripts/modules/pundit/event/event.js"></script>
+      <script src="scripts/modules/pundit/event/create.js"></script>
+
+
+      <script src="scripts/filters/marketTypeFilter.js"></script>
 
       <script src="scripts/app.js"></script>
 
       <script src="scripts/factories/betfairService.js"></script>
       <script src="scripts/factories/eventService.js"></script>
       <script src="scripts/factories/authService.js"></script>
+      <script src="scripts/directives/genericDirectives.js"></script>
+
+
 
     <!-- endbuild -->
     <!-- build:js scripts/templates.js -->

@@ -1,1 +1,44 @@
-"Hello"
+<div  ng-controller="EventSelectCtrl as vm" id="content-wrapper">
+  <div class="page-content">
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-xs-12">
+        <h4>Select the required event</h4>
+        <form class="form-inline">
+          <ol class="nya-bs-select" ng-change="vm.pollForMarketTypes()" ng-model="vm.selectedEvent" data-live-search="true">
+            <li nya-bs-option="event in vm.eventList  | orderBy:'-marketCount'">
+              <!-- the text content of anchor element will be used for search -->
+              <a>
+                {{ event.event.name }}
+                <span class="glyphicon glyphicon-ok check-mark"></span>
+              </a>
+            </li>
+          </ol>
+        </form>
+      </div>
+    </div>
+    <div flash-message="2000" ></div>
+    <hr>
+    <div class="row" ng-if="vm.marketTypes && vm.displayOptions">
+      <div class="col-xs-4 col-md-4 col-lg-4">
+        <h4>Select a market</h4>
+        <form class="form-inline">
+          <ol class="nya-bs-select" title="Optional search filter" ng-change="vm.inputMarketType()" ng-model="vm.selectedMarket" data-live-search="true">
+            <li nya-bs-option="market in vm.marketTypes">
+              <!-- the text content of anchor element will be used for search -->
+              <a>
+                {{ market.marketType | marketFilter }}
+                <span class="glyphicon glyphicon-ok check-mark"></span>
+              </a>
+            </li>
+          </ol>
+        </form>
+      </div>
+    </div>
+    <div class="row-fluid" ng-if="vm.marketTypes">
+      <div class="col-xs-8 col-md-8 col-lg-8">
+        <button type="submit" ng-click="vm.continue()" class="btn btn -lg btn-primary"><i class="fa fa-arrow-circle-right"></i> Continue</button>
+      </div>
+    </div>
+  </div>
+</div>
+

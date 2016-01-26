@@ -12,6 +12,7 @@ var BetterBetting = angular.module('BetterBetting', [
   'BetterBetting.pundit',
   'BetterBetting.pundit.event',
   'BetterBetting.pundit.selection',
+  'BetterBetting.pundit.createEvent',
   'flash',
   'ngMessages',
   'nya.bootstrap.select'

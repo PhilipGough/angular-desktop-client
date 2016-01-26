@@ -13,8 +13,8 @@ angular.module('BetterBetting.pundit.event', [])
   });
 })
 
-.controller('PunditEventCtrl', ['$scope', 'betfairFactory', 'eventFactory', 'Flash', '$state',
-                    function($scope, betfairFactory, eventFactory, Flash, $state) {
+.controller('PunditEventCtrl', ['$scope', 'betfairFactory', 'eventFactory', 'Flash', '$state', '$timeout',
+                    function($scope, betfairFactory, eventFactory, Flash, $state, $timeout) {
   var vm = this;
   (function init() {
   vm.listReady = false;
@@ -27,13 +27,18 @@ angular.module('BetterBetting.pundit.event', [])
   vm.beforeDateSet = false;
   vm.apiReady = false;
   vm.textQuery = '';
+  vm.loading = true;
 })();
 
   betfairFactory.callAPI('eventList').then(function(data) {
     vm.sportGenres = data;
     vm.sportsList = true;
-    vm.listReady = true;
+    $timeout(function() {
+        vm.listReady = true;
+        vm.loading = false;
+    }, 1500);
   },function() {
+      vm.loading = false;
       var message = '<strong>Error!</strong> Cannot retrieve data at this time';
       Flash.create('danger', message, 'custom-class');
   });
@@ -74,11 +79,8 @@ angular.module('BetterBetting.pundit.event', [])
     );
 
   vm.setDates = function() {
-      var yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      yesterday.setTime(yesterday.getTime()-yesterday.getHours()*3600*1000-yesterday.getMinutes()*60*1000);
-      vm.afterDate = yesterday;
-      vm.minDate  = yesterday;
+      vm.afterDate = new Date();
+      vm.minDate  = new Date();
       var nextweek = new Date(vm.beforeDate.getFullYear(), vm.beforeDate.getMonth(), vm.beforeDate.getDate()+7);
       vm.beforeDate = nextweek;
     };
@@ -88,8 +90,6 @@ angular.module('BetterBetting.pundit.event', [])
     vm.minDate = new Date();
     vm.format = 'dd-MMMM-yyyy';
     vm.afterTime = new Date();
-    vm.hstep = 1;
-    vm.mstep = 15;
     vm.status = {
       opened: false,
       openedTwo: false
@@ -143,14 +143,12 @@ angular.module('BetterBetting.pundit.event', [])
     var payload = eventFactory.getMarketFilter();
     betfairFactory.callAPIPost('event', payload)
     .then(function(data) {
-      console.log(data);
       if(1 > data.length) {
        var message = 'No events match the information you have provided';
           Flash.create('danger', message, 'custom-class');
       }
       else {
         eventFactory.setResultsSet(data);
-        console.log('Hi');
         $state.go('pundit.selection');
       }
     }, function() {

@@ -1,0 +1,79 @@
+
+<div ng-controller="EventCreationCtrl as vm" id="content-wrapper">
+  <div class="page-content">
+    <div class="container">
+      <div align="center" class ="well">
+        <div class="row">
+          <div class="col-md-12 col-lg-12">
+            <h4 > Finalise the event</h4>
+            <p>{{vm.display.event.name}}</p>
+            <div class="row">
+              <div class="col-lg-3 col-md-3">
+                <form class="form-inline">
+                  <ol class="nya-bs-select" title="Choose market" ng-change="vm.getMarketPriceData()" ng-model="vm.selectedMarket" data-live-search="true">
+                    <li nya-bs-option="market in vm.marketList  | orderBy:'marketStartTime'">
+                      <!-- the text content of anchor element will be used for search -->
+                      <a ng-if="!market.event.venue">
+                        {{ market.marketName }}
+                        <span class="glyphicon glyphicon-ok check-mark"></span>
+                      </a>
+                      <a ng-if="market.event.venue">
+                        {{ market.marketName }} {{market.marketStartTime | date : 'shortTime'}}
+                        <span class="glyphicon glyphicon-ok check-mark"></span>
+                      </a>
+                    </li>
+                  </ol>
+                </form>
+              </div>
+              <div class="col-lg-3 col-md-3" ng-if="vm.selectedMarket">
+                <form class="form-inline">
+                <ol class="nya-bs-select" title="Choose selection" ng-change="vm.getRunnerPriceData()" ng-model="vm.selectedResult" data-live-search="true">
+                    <li nya-bs-option="runner in vm.selectedMarket.runners">
+                      <!-- the text content of anchor element will be used for search -->
+                      <a>
+                        {{runner.runnerName}}
+                        <span class="glyphicon glyphicon-ok check-mark"></span>
+
+                      </a>
+                    </li>
+                  </ol>
+                </form>
+              </div>
+              <div class="col-lg-3 col-md-3" ng-if="vm.selectedResult">
+               <form class="form-inline">
+                 <ol class="nya-bs-select" title="Set recommend stake" ng-model="vm.setStake">
+                  <li nya-bs-option="item in vm.stakeValue">
+                    <!-- the text content of anchor element will be used for search -->
+                    <a>
+                      {{item}}
+                      <span class="glyphicon glyphicon-ok check-mark"></span>
+                    </a>
+                  </li>
+                </ol>
+              </form>
+            </div>
+            <div class="col-lg-3 col-md-3" ng-if="vm.setStake">
+             <form class="form-inline">
+               <ol class="nya-bs-select" title="Bet type" ng-model="vm.setChoice">
+                <li nya-bs-option="item in vm.betType">
+                  <!-- the text content of anchor element will be used for search -->
+                  <a>
+                    {{item}}
+                    <span class="glyphicon glyphicon-ok check-mark"></span>
+                  </a>
+                </li>
+              </ol>
+            </form>
+          </div>
+          <div class="row" ng-if="vm.setChoice">
+            <div class="col-xs-12 col-md-12 col-lg-12">
+              <button class="btn btn-block btn-success" type="submit" ng-click="vm.continue()" class="btn btn -lg btn-primary"><i class="fa fa-arrow-circle-right"></i> Continue</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
