@@ -79,6 +79,12 @@ angular.module('BetterBetting.pundit.createEvent', [])
 
       vm.publishEvent = function() {
         console.log(vm.data);
+        betfairFactory.callAPIPost('post', vm.data)
+        .then(function(data) {
+          console.log(data);
+        }), function(data) {
+          console.log(data);
+        }
         $modalInstance.close();
      }
 }

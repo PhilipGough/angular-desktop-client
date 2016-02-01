@@ -1,7 +1,7 @@
 'use strict';
 angular.module('BetterBetting.pundit')
 
-.factory('betfairFactory', ['$http', '$rootScope', function($http, $rootScope) {
+.factory('betfairFactory', ['$http', '$rootScope', 'authFactory', function($http, $rootScope, authFactory) {
   var betfairClient = {};
 
   betfairClient.callAPI = function(endpoint) {
@@ -19,6 +19,7 @@ angular.module('BetterBetting.pundit')
     betfairClient.callAPIPost = function(endpoint, payload) {
     return $http({
       method: 'post',
+      headers : {'Authorization': authFactory.getStoredToken()},
       url: $rootScope.baseURL + endpoint,
       contentType: 'application/json',
       data: payload

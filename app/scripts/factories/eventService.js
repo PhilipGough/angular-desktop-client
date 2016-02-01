@@ -137,7 +137,8 @@ angular.module('BetterBetting.pundit')
     polishedObj.eventData = {
       'selectionId' : eventData.selectedResult.selectionId,
       'eventTypeId' : eventData.selectedMarket.eventType.id,
-      'marketId' : eventData.selectedMarket.marketId
+      'marketId' : eventData.selectedMarket.marketId,
+      'eventId' : eventData.selectedMarket.event.id
     }
 
     return polishedObj;
