@@ -19,7 +19,9 @@ angular.module('BetterBetting.register', [])
   $scope.user.pundit = false;
   $scope.register = register;
 
-
+  /**
+   * Route user to correct state based on value in JWT
+   */
   function routeUser(userData) {
     if(userData.hasPermission === 'True'){
       $state.go('pundit.dashboard');
@@ -28,7 +30,10 @@ angular.module('BetterBetting.register', [])
       $state.go('user.home');
     }
   }
-
+  /**
+   * Register these user details and store token if success
+   * Print error message if this request fails
+   */
   function register(user) {
     if(user.password === user.password2){
         $scope.dataLoading = true;
@@ -58,7 +63,9 @@ angular.module('BetterBetting.register', [])
 
 
 }])
-
+/**
+ * Factor to handle user registration
+ */
 .factory('RegistrationFactory', ['$http', '$rootScope',
                 function($http, $rootScope) {
 

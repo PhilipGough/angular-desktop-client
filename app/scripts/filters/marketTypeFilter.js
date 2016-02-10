@@ -8,6 +8,40 @@ angular.module('BetterBetting.pundit')
   }
 })
 
+
+
+.filter('publishedEvenFilter', function() {
+
+  return function(item) {
+    var output = [];
+    item.forEach(function(entry) {
+      filteredItem = {};
+      for (var key in entry.meta_data) {
+
+        if (entry.meta_data[key]['Event']) {
+          filteredItem.event = entry.meta_data[key]['Event']
+        }
+        if  (entry.meta_data[key]['Start Time']) {
+          filteredItem.startTime = entry.meta_data[key]['Start Time']
+        }
+        if  (entry.meta_data[key]['Market']) {
+          filteredItem.market = entry.meta_data[key]['Market']
+        }
+        if  (entry.meta_data[key]['Selection']) {
+          filteredItem.selection = entry.meta_data[key]['Selection']
+        }
+      }
+      filteredItem.id = entry.id;
+      filteredItem.state = entry.state;
+      output.push(filteredItem);
+
+    })
+
+
+    return output;
+  }
+})
+
 .filter('range', function() {
   return function(input, min, max) {
     min = parseFloat(min); //Make string input int

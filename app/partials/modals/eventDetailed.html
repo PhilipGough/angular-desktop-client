@@ -1,0 +1,54 @@
+<div class="modal-header">
+  <h3 class="modal-title">Event Details</h3>
+  <alert data-ng-repeat="alert in vm.alerts" type="{{alert.type}}" close="vm.closeAlert($index)">{{alert.msg}}</alert>
+</div>
+
+
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-6 col-lg-6">
+      <u> Event/Market Details</u>
+        <div ng-repeat="data in vm.data.meta_data">
+          <table>
+           <tr ng-repeat="(key, value) in data">
+            <td>{{key}}&nbsp;-&nbsp; </td> <td> {{value}}</td>
+           </tr>
+          </table>
+        </div>
+    </div>
+
+      <div class="col-md-6 col-lg-6">
+        <div ng-if="vm.data.comment">
+          <h4>Pundit comment:</h4>
+          <div class="well">{{vm.data.comment}}</div>
+        </div>
+      </div>
+
+  </div>
+
+  <hr>
+
+  <div class="row">
+   <div class="col-md-6 col-lg-6" ng-if="vm.data.runnerdata">
+      <u> Runner Details</u> <img ng-src="{{vm.data.colorSrc}}"/>
+          <table>
+            <tr ng-repeat="(key, value) in vm.data.runnerdata">
+                <td>{{key}}&nbsp;-&nbsp; </td> <td> {{value}}</td>
+            </tr>
+          </table>
+   </div>
+   <div class="col-md-6 col-lg-6" ng-if="vm.data.pricedata">
+      <u> Price Details</u>
+          <table>
+            <tr ng-repeat="(key, value) in vm.data.pricedata">
+                <td>{{key}}&nbsp;-&nbsp; </td> <td> {{value}}</td>
+            </tr>
+          </table>
+   </div>
+  </div>
+
+ </div>
+
+    <div class="modal-footer">
+      <button class="btn" ng-click="$close()">Close</button>
+    </div>

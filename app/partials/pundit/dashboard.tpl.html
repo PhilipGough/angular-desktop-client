@@ -42,10 +42,10 @@
     <rd-widget>
       <rd-widget-body>
         <div class="widget-icon blue pull-left">
-          <i class="fa fa-support"></i>
+          <i class="fa fa-star"></i>
         </div>
-        <div class="title">62</div>
-        <div class="comment">Tickets</div>
+        <div class="title">{{vm.userRating}}</div>
+        <div class="comment">Current Rating</div>
       </rd-widget-body>
     </rd-widget>
   </div>
@@ -54,24 +54,28 @@
 <div class="row">
   <div class="col-lg-6">
     <rd-widget>
-          <rd-widget-header icon="fa-tasks" title="Servers">
-        <a href="#">Manage</a>
+          <rd-widget-header icon="fa-calendar" title="Events">
           </rd-widget-header>
           <rd-widget-body classes="medium no-padding">
         <div class="table-responsive">
-          <table class="table">
-            <tbody>
-              <tr><td>RDVMPC001</td><td>238.103.133.37</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
-              <tr><td>RDVMPC002</td><td>68.66.63.170</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
-              <tr><td>RDVMPC003</td><td>76.117.212.33</td><td><span tooltip="Server Down!" class="text-danger"><i class="fa fa-warning"></i></span></td></tr>
-              <tr><td>RDPHPC001</td><td>91.88.224.5</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
-              <tr><td>RDESX001</td><td>197.188.15.93</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
-              <tr><td>RDESX002</td><td>168.85.154.251</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
-              <tr><td>RDESX003</td><td>209.25.191.61</td><td><span tooltip="Server Down!" class="text-danger"><i class="fa fa-warning"></i></span></td></tr>
-              <tr><td>RDESX004</td><td>252.37.192.235</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
-              <tr><td>RDTerminal01</td><td>139.71.18.207</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
-              <tr><td>RDTerminal02</td><td>136.80.122.212</td><td><span tooltip="Could not connect!" class="text-warning"><i class="fa fa-flash"></i></span></td></tr>
-              <tr><td>RDDomainCont01</td><td>196.80.245.33</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
+          <table class="table table-hover">
+          <thead>
+              <tr>
+                <th><a href="" ng-click="orderByField='event'; reverseSort = !reverseSort">Event</a></th>
+                <th><a href="" ng-click="orderByField='time'; reverseSort = !reverseSort">Start Time</a></th>
+                <th><a href="" ng-click="orderByField='startTime'; reverseSort = !reverseSort">Market</a></th>
+                <th><a href="" ng-click="orderByField='selection'; reverseSort = !reverseSort">Selection</a></th>
+                <th><a href="" ng-click="orderByField='state'; reverseSort = !reverseSort">Result</a></th>
+              </tr>
+          </thead>
+            <tbody ng-repeat="event in vm.fltrEvents | orderBy:orderByField:reverseSort" ng-click="vm.show(event)">
+              <tr>
+                    <td>{{event.event}}</td>
+                    <td>{{event.startTime}}</td>
+                    <td>{{event.market}}</td>
+                    <td>{{event.selection}}</td>
+                    <td>{{event.state}}</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -101,31 +105,3 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-lg-6">
-      <rd-widget>
-        <rd-widget-header icon="fa-plus" title="Extras">
-          <button class="btn btn-sm btn-info">Button</button>
-        </rd-widget-header>
-        <rd-widget-body>
-        <div class="message">
-          This is a standard message which will also work the ".no-padding" class, I can also <span class="error">be an error message!</span>
-        </div>
-        <hr />
-        <div class="message">
-          <a href="http://angular-ui.github.io/bootstrap/" target="_blank">UI Bootstrap</a> is included, so you can use <a href="#" tooltip="I'm a tooltip!">tooltips</a> and all of the other native Bootstrap JS components!
-        </div>
-        </rd-widget-body>
-      </rd-widget>
-  </div>
-  <div class="col-lg-6">
-    <rd-widget>
-      <rd-widget-header icon="fa-cog fa-spin" title="Loading Directive">
-        <a href="http://tobiasahlin.com/spinkit/" target="_blank">SpinKit</a>
-      </rd-widget-header>
-      <rd-widget-body>
-        <rd-loading></rd-loading>
-      </rd-widget-body>
-    </rd-widget>
-  </div>
-</div>

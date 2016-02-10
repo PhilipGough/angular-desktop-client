@@ -1,3 +1,8 @@
+/**
+ * Module for a pundits event main page. Includes the ability for a pundit
+ * to generate an event by stepping through a wizard making json-rpc calls
+ * to an external API for live data
+ */
 'use strict';
 angular.module('BetterBetting.pundit.event', [])
 .config(function($stateProvider){
@@ -12,7 +17,9 @@ angular.module('BetterBetting.pundit.event', [])
     }
   });
 })
-
+/**
+ * Controller for this pundit view.
+ */
 .controller('PunditEventCtrl', ['$scope', 'betfairFactory', 'eventFactory', 'Flash', '$state', '$timeout',
                     function($scope, betfairFactory, eventFactory, Flash, $state, $timeout) {
   var vm = this;
@@ -30,6 +37,12 @@ angular.module('BetterBetting.pundit.event', [])
   vm.loading = true;
 })();
 
+  /**
+   *  Call third party API for a list of current events to populate
+   *  dropdown menu
+   * @return {String} - Returns a JSON string of data containing current events if success
+   * If error, display flash warning message to end user
+   */
   betfairFactory.callAPI('eventList').then(function(data) {
     vm.sportGenres = data;
     vm.sportsList = true;
@@ -42,13 +55,18 @@ angular.module('BetterBetting.pundit.event', [])
       var message = '<strong>Error!</strong> Cannot retrieve data at this time';
       Flash.create('danger', message, 'custom-class');
   });
-
+  /**
+   * Function which watches for changes to value in dropdown menu an make
+   * appropriate HTTP request to reflect this change as needed.
+   */
    $scope.$watch(function watchSelectedSport( scope ) {
       return( vm.selectedSport );
     },  function handleSportChange( newValue ) {
         if(angular.isDefined(newValue) && newValue !== null){
            eventFactory.setSportGenre(newValue);
            if(newValue.eventType.name === 'Soccer') {
+
+              //Get a list of current competitions if value becomes football
               betfairFactory.callAPI('competitionList')
               .then(function(data) {
                   vm.footBallCompetitions = data;
@@ -62,6 +80,7 @@ angular.module('BetterBetting.pundit.event', [])
                   Flash.create('danger', message, 'custom-class');
             });
            } else {
+            //Get a list of racing venues if value becomes racing
             betfairFactory.callAPI('venues')
               .then(function(data) {
                   vm.racingVenues = data;
@@ -77,14 +96,18 @@ angular.module('BetterBetting.pundit.event', [])
         }
       }
     );
-
+   /**
+    * Define correct dates for calender picker in wizard
+    */
   vm.setDates = function() {
       vm.afterDate = new Date();
       vm.minDate  = new Date();
       var nextweek = new Date(vm.beforeDate.getFullYear(), vm.beforeDate.getMonth(), vm.beforeDate.getDate()+7);
       vm.beforeDate = nextweek;
     };
-
+  /*
+   * Initialise the calender with the calculated data
+   */
   vm.initilaiseCalenders = function() {
     vm.afterDate = new Date();
     vm.minDate = new Date();
@@ -101,10 +124,15 @@ angular.module('BetterBetting.pundit.event', [])
 
   vm.initilaiseCalenders();
 
+  // Function to reset calender
   vm.clear = function () {
     vm.afterDate = null;
   };
-
+  /*
+   * Function bound to the view with an ng-change directive
+   * Called after a time change and will use the service
+   * to alter makret filter for final POST request
+   */
   vm.afterTimeChange = function (calenderRef) {
     if(calenderRef === 1){
       this.afterDateSet = true;
@@ -114,7 +142,9 @@ angular.module('BetterBetting.pundit.event', [])
         eventFactory.setBeforeTimeDate(vm.beforeDate, vm.beforeTime);
     }
   };
-
+  /*
+   * Function to open the calender with a click
+   */
   vm.open = function($event, calender) {
     if(calender === 1){
       vm.status.opened = true;
@@ -122,7 +152,10 @@ angular.module('BetterBetting.pundit.event', [])
       vm.status.openedTwo = true;
     }
   };
-
+  /**
+   * This function will use the data generated in this section of the wizard which
+   * has been sorted by the service to generate and display the results from Betfair API
+   */
   vm.continue = function() {
      if(! vm.afterDateSet){
         eventFactory.setAfterTimeDate(vm.afterDate, vm.afterTime);
@@ -141,7 +174,7 @@ angular.module('BetterBetting.pundit.event', [])
         }
      }
     var payload = eventFactory.getMarketFilter();
-    betfairFactory.callAPIPost('event', payload)
+    betfairFactory.callAPIPost('events', payload)
     .then(function(data) {
       if(1 > data.length) {
        var message = 'No events match the information you have provided';

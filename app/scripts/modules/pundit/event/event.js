@@ -1,3 +1,6 @@
+/**
+ *  Module for second section of event wizrd
+ */
 'use strict';
 angular.module('BetterBetting.pundit.selection', [])
 .config(function($stateProvider){
@@ -19,10 +22,13 @@ angular.module('BetterBetting.pundit.selection', [])
     var vm = this;
     vm.eventList = eventFactory.getResultsSet();
     vm.apiReady = false;
-
+    /**
+     * Using the results from the previous step of the event wizard
+     * use that data to generate market data for the selected event
+     * @return {[type]} [description]
+     */
     vm.pollForMarketTypes = function() {
       eventFactory.setEvent(this.selectedEvent);
-      console.log(this.selectedEvent);
       betfairFactory.callAPIPost('market',eventFactory.getEventFilter())
       .then(function(data) {
         vm.marketTypes = data
@@ -36,7 +42,12 @@ angular.module('BetterBetting.pundit.selection', [])
 
       };
     };
-
+    /**
+     * Continue on to next step of the wizard
+     *
+     * @return {String}  JSON string with complex nested response from the Betfair API.
+     * This is stored in the event service to be used for the final stage
+     */
     vm.continue = function() {
 
       var payload = '';
@@ -51,7 +62,7 @@ angular.module('BetterBetting.pundit.selection', [])
           eventFactory.setMarketCatalogueData(data);
           $state.go('pundit.createEvent');
         }), function() {
-          console.log('Hi')
+          console.log('Error');
         };
     };
 

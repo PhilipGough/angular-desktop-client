@@ -1,3 +1,6 @@
+/**
+ * Factory to handle any authentication related requests
+ */
 'use strict';
 angular.module('BetterBetting')
 
@@ -6,7 +9,10 @@ angular.module('BetterBetting')
 
     var authFactory = {};
     var user = {};
-
+    /**
+     * Check if user is authenticated
+     * @return {Boolean} - Result
+     */
     authFactory.isAuthenticated = function() {
       var token = this.getStoredToken();
       if(token) {
@@ -16,18 +22,31 @@ angular.module('BetterBetting')
           return false;
       }
     };
-
+    /**
+     * Return this private user data
+     */
     authFactory.getUserData = function() {
      return user;
     };
-
+    /**
+     * Set data for the current user
+     */
     authFactory.setUserData = function(token) {
       var parsedJWT = this.parseJWT(token);
       user.name = parsedJWT.name;
       user.id = parsedJWT.sub;
       user.hasPermission = parsedJWT.role;
+      user.welcome = true;
     };
-
+    /**
+     * Mark home page as visited after login
+     */
+    authFactory.markVisited = function() {
+      user.welcome = false;
+    }
+    /**
+     * Request JSON Web Token from server
+     */
     authFactory.getAuthToken = function(email, password) {
         return $http({
           method: 'post',
@@ -39,11 +58,15 @@ angular.module('BetterBetting')
           }
       });
     };
-
+    /**
+     * Return the JWT from local storage
+     */
     authFactory.getStoredToken = function() {
       return localStorage.getItem('betterTradingToken');
     };
-
+    /**
+     * Parse the JWT to get values from it
+     */
     authFactory.parseJWT = function(token) {
       var base64Url = token.split('.')[1];
       var base64 = base64Url.replace('-', '+').replace('_', '/');

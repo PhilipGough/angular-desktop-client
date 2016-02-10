@@ -1,0 +1,55 @@
+<div class="col-lg-12 col-md-12" ng-if="vm.loading">
+      <rd-widget>
+    </rd-widget-header>
+    <rd-widget-body>
+    <rd-loading></rd-loading>
+  </rd-widget-body>
+</rd-widget>
+</div>
+
+
+<div class="col-lg-11 col-sm-11" ng-if="!vm.loading">
+
+
+
+  <div class="row profile">
+
+    <ul class="nav nav-tabs" id="myTab">
+      <li class="active"><a href="page-profile.html#skills">Skills</a></li>
+      <li><a href="page-profile.html#friends">Friends</a></li>
+      <li><a href="page-profile.html#photos">Photos</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane active" id="skills">
+
+        <div class="row">
+
+          <div class="col-sm-8">
+          <canvas id="line" class="chart chart-line" chart-data="vm.data"
+            chart-labels="vm.labels" chart-legend="true" chart-series="vm.series"
+            chart-click="vm.onClick" chart-colours="vm.colors">
+</canvas>
+            <h2>About Me</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+            <h2>Bio</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+            <h2>Job</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+
+            <a class="btn btn-success" ng-click="vm.alterSubscription()"><i class="fa fa-eye"></i>Subscribe</a>
+          </div><!--/row-->
+
+        </div>
+
+
+      </div>
+    </div>
+
+
+  </div><!--/profile-->
+</div>
+
+
+
+
