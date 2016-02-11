@@ -1,0 +1,63 @@
+<div class="row">
+
+  <div class="col-sm-8">
+    <canvas id="line" class="chart chart-line" chart-data="vm.data"
+    chart-labels="vm.labels" chart-legend="true" chart-series="vm.series"
+    chart-click="vm.onClick" chart-colours="vm.colors">
+  </canvas>
+</div><!--/row-->
+
+</div>
+
+<div class="row">
+
+  <div class=" col-sm-8 well">
+
+   <div class=" col-sm-4">
+    <h5><u>Date from:</u></h5>
+    <p class="input-group">
+        <input type="text" class="form-control" datepicker-popup="{{vm.format}}" ng-model="vm.afterDate" is-open="vm.status.opened" close-text="Close" />
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default" ng-click="vm.open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
+        </span>
+    </p>
+  </div>
+  <div class="col-sm-4">
+    <h5><u>Date to:</u></h5>
+    <p class="input-group">
+      <input type="text" class="form-control" datepicker-popup="{{vm.format}}" ng-model="vm.beforeDate" is-open="vm.status.openedTwo" close-text="Close" />
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-default" ng-click="vm.open($event,2)"><i class="glyphicon glyphicon-calendar"></i></button>
+      </span>
+    </p>
+  </div>
+  <div class="form-group col-sm-4 text-center">
+    <h5><u>Display data for:</u></h5>
+    <label class="checkbox-inline">
+      <input type="checkbox" name="outright" ng-model="vm.outright" ng-init="vm.outright=true"> Outright
+    </label>
+    <label class="checkbox-inline">
+      <input type="checkbox" name="football" ng-model="vm.football" ng-init="vm.football=true"> Football
+    </label>
+    <label class="checkbox-inline">
+      <input type="checkbox" name="racing" ng-model="vm.racing" ng-init="vm.racing=true"> Racing
+    </label>
+  </div>
+
+
+</div>
+
+</div>
+<div class="row">
+  <div class="col-sm-8">
+   <button type="submit" ng-click="vm.continue()" class="btn btn-block btn-primary"><i class="fa fa-arrow-circle-right"></i> Search</button>
+ </div>
+</div>
+
+</div>
+</div>
+
+
+</div><!--/profile-->
+</div>
+

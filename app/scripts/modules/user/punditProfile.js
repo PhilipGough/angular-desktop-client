@@ -32,9 +32,36 @@ angular.module('BetterBetting.user.punditProfile', [])
                        function($stateParams, restFactory, statsFactory, $modal, $filter) {
 
     var vm = this;
+    vm.format = 'dd-MMMM-yyyy';
     vm.loading = true;
     vm.series = ['Outright', 'Football', 'Racing'];
     vm.colors = ['#b3b3cc', '#85adad', '#b3e6ff']
+    vm.tabs = [
+        {'title': 'Overview', 'content' : 'partials/user/punditOverview.tpl.html' },
+        {'title': 'Stats', 'content' : 'partials/user/punditStats.tpl.html'}
+        ]
+
+  vm.open = function($event, calender) {
+    if(calender === 1){
+      vm.status.opened = true;
+    } else {
+      vm.status.openedTwo = true;
+    }
+  };
+
+
+
+    /*
+   * Initialise the calender with the calculated data
+   */
+  vm.initilaiseCalenders = function() {
+    vm.status = {
+      opened: false,
+      openedTwo: false
+    };
+  };
+
+  vm.initilaiseCalenders();
 
     /*
      * Function used to handle onMouse click event on graph
