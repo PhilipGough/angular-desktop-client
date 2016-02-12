@@ -8,11 +8,11 @@
 </div>
 
 
-<div class="col-lg-10 col-sm-10" ng-if="!vm.loading">
+<div class="col-lg-10 col-md-10 col-sm-10" ng-if="!vm.loading">
 
 
 
-  <div class="row profile">
+  <div class="row profile" ng-if="!vm.loading">
 
     <tabset>
       <tab ng-repeat="tab in vm.tabs" heading="{{tab.title}}" active="tab.active" disable="tab.disabled">

@@ -28,40 +28,60 @@ angular.module('BetterBetting.user.punditProfile', [])
  * @param  {factory} statsFactory - Factory used to organise and format stats for graph
  * @param  {service} $modal - Modal used to generate event object when graph point clicked
  */
-.controller('PunditProfileCtrl', ['$stateParams', 'restFactory', 'statsFactory', '$modal',
-                       function($stateParams, restFactory, statsFactory, $modal, $filter) {
+.controller('PunditProfileCtrl', ['$stateParams', 'restFactory',
+                'statsFactory', '$modal', '$filter', '$timeout', 'ngDialog',
+                       function($stateParams, restFactory, statsFactory,
+                                        $modal, $filter, $timeout, ngDialog) {
 
     var vm = this;
     vm.format = 'dd-MMMM-yyyy';
     vm.loading = true;
     vm.series = ['Outright', 'Football', 'Racing'];
-    vm.colors = ['#b3b3cc', '#85adad', '#b3e6ff']
+    vm.colors = ['#b3b3cc', '#85adad', '#b3e6ff'];
     vm.tabs = [
         {'title': 'Overview', 'content' : 'partials/user/punditOverview.tpl.html' },
         {'title': 'Stats', 'content' : 'partials/user/punditStats.tpl.html'}
         ]
 
-  vm.open = function($event, calender) {
-    if(calender === 1){
-      vm.status.opened = true;
-    } else {
-      vm.status.openedTwo = true;
-    }
-  };
-
-
-
-    /*
-   * Initialise the calender with the calculated data
-   */
-  vm.initilaiseCalenders = function() {
-    vm.status = {
-      opened: false,
-      openedTwo: false
+    vm.open = function($event, calender) {
+      if(calender === 1){
+        vm.status.opened = true;
+      } else {
+        vm.status.openedTwo = true;
+      }
     };
-  };
+
+   /*
+    * Initialise the calender with the calculated data
+    */
+    vm.initilaiseCalenders = function() {
+      vm.status = {
+        opened: false,
+        openedTwo: false
+      };
+    };
 
   vm.initilaiseCalenders();
+
+  vm.continue = function() {
+    var stats = statsFactory.sortEvents(vm.outright, vm.football, vm.racing);
+    vm.series = [];
+    vm.colors = [];
+    if(vm.outright){
+      vm.series.push('Outright');
+      vm.colors.push('#b3b3cc')
+    }
+    if(vm.football){
+      vm.series.push('Football');
+      vm.colors.push('#85adad')
+    }
+     if(vm.racing){
+      vm.series.push('Racing');
+      vm.colors.push('#b3e6ff')
+    }
+    vm.data = stats.data
+    vm.labels = stats.labels
+  };
 
     /*
      * Function used to handle onMouse click event on graph
@@ -70,31 +90,53 @@ angular.module('BetterBetting.user.punditProfile', [])
      * @param  {event} evt - The mouse click event
      */
     vm.onClick = function (points, evt) {
-      var eventMap = statsFactory.getDict()
-      angular.forEach(points, function(point){
-        var key = point.datasetLabel + point.label
-        if(eventMap[key]) {
-          var event = eventMap[key]
+      var key = points[0].label;
+      var eventsAtDate = statsFactory.getDict()[key]
+      ngDialog.open({
+        template: 'partials/user/punditEvenList.tpl.html',
+        controller: ['eventsAtDate', EventListCtrl],
+        controllerAs: 'vm',
+        resolve : {
+          eventsAtDate: function() { return eventsAtDate}
+        }
+      });
 
-          $modal.open({
+      console.log(points, evt)
+    };
+
+  function EventListCtrl(eventsAtDate) {
+    var vm = this;
+    vm.unfilteredEvents = eventsAtDate;
+    vm.events = $filter('publishedEvenFilter')(eventsAtDate);
+    vm.show = function(eventId) {
+    var requiredEvent = null;
+      for(var i = 0 ; i < vm.unfilteredEvents.length ; i++){
+        if(vm.unfilteredEvents[i].id === eventId) {
+          requiredEvent = vm.unfilteredEvents[i];
+          break;
+        }
+      }
+       $modal.open({
             animation: true,
             templateUrl: 'partials/modals/eventDetailed.html',
             controller: ['$modalInstance', 'requiredData', EventModalCtrl],
             controllerAs: 'vm',
             size: 'lg',
             resolve: {
-              requiredData: function () { return event }
+              requiredData: function () { return requiredEvent }
             }
           });
-      }
-    })
+
+    }
   };
+
   /**
    * EventModalCtrl - controller to handle the modal
    * @param {obj} $modalInstance - The modal object
    * @param {obj} requiredData - The event resolved from the mouse click
    */
     function EventModalCtrl($modalInstance, requiredData) {
+      ngDialog.close();
       var vm = this;
       var colors = requiredData.runnerdata.Colors;
       if(colors) {
@@ -121,12 +163,13 @@ angular.module('BetterBetting.user.punditProfile', [])
       */
     vm.pundit = restFactory.makeGetRequest('pundit/'+$stateParams.punditId)
       .then(function(response) {
-        var stats = statsFactory.sortEvents(response.events);
+        var stats = statsFactory.newFunction(response.events)
+        //var stats = statsFactory.sortEvents(response.events);
         vm.data = stats.data
         vm.labels = stats.labels
-        vm.loading = false;
+        $timeout(stopLoading, 1500);
       }, function(error){
-        vm.loading = false;
+         $timeout(stopLoading, 1500);
         console.log(error)
       });
 
@@ -139,6 +182,10 @@ angular.module('BetterBetting.user.punditProfile', [])
       .then(function (data) {
         console.log(data);
       })
-    }
+    };
+
+    function stopLoading(){
+      vm.loading = false;
+    };
   }
 ]);

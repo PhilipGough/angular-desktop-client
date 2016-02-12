@@ -29,7 +29,8 @@ var BetterBetting = angular.module('BetterBetting', [
   'ngMessages',
   'nya.bootstrap.select',
   'angularUtils.directives.dirPagination',
-  'chart.js'
+  'chart.js',
+  'ngDialog'
 ]);
 
 
