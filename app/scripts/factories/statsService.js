@@ -10,12 +10,15 @@ angular.module('BetterBetting')
     'football' : {},
     'racing' : {}
   };
+  var afterDate = null;
 
 
-  stats.newFunction = function(eventList){
+  stats.computeEventData = function(eventList){
     eventList = sortByDate(eventList);
     var startDate = new Date(eventList[0].created_at);
-    populateLabels(startDate);
+    afterDate = angular.copy(startDate);
+    var endDate = new Date();
+    stats.populateLabels(startDate, endDate, initStatValues);
     angular.forEach(eventList, function(event) {
         if(!(event.state == 'Pending')){
           var dateKey = $filter('date')(event.created_at, 'd/M/yy');
@@ -32,27 +35,28 @@ angular.module('BetterBetting')
           }
         }
     });
-    return populateData();
+    return stats.populateData();
   };
 
 
-  function populateLabels(startDate) {
+  stats.populateLabels = function(startDate, endDate, callback) {
     stats.labels = [];
-    startDate.setDate(startDate.getDate()-1)
-    startDate.setHours(0,0,0,0);
-    var today = new Date();
-    today.setHours(0,0,0,0);
-    while(startDate < today) {
-      var filteredDate = $filter('date')(startDate, 'd/M/yy');
+    var initDate = new Date(startDate);
+    initDate.setDate(startDate.getDate()-1)
+    initDate.setHours(0,0,0,0);
+    endDate.setHours(0,0,0,0);
+
+    while(initDate < endDate) {
+      var filteredDate = $filter('date')(initDate, 'd/M/yy');
       stats.labels.push(filteredDate);
-      statistics.overall[filteredDate] = 0;
-      statistics.football[filteredDate] = 0;
-      statistics.racing[filteredDate] = 0;
-      startDate.setDate(startDate.getDate() + 1);
+      if(callback) {
+        callback(filteredDate);
+      }
+      initDate.setDate(initDate.getDate() + 1);
     }
   };
 
-  function populateData(){
+   stats.populateData = function(){
     stats.data = [];
     var outRightArray = [];
     var footballArray = [];
@@ -65,6 +69,16 @@ angular.module('BetterBetting')
     }
     stats.data.push(outRightArray, footballArray, racingArray);
     return stats;
+  };
+
+  stats.getStartDate = function() {
+    return afterDate;
+  }
+
+  function initStatValues(filteredDate) {
+      statistics.overall[filteredDate] = 0;
+      statistics.football[filteredDate] = 0;
+      statistics.racing[filteredDate] = 0;
   };
 
   function calculateDataValue(arrayIn, objIn, key) {

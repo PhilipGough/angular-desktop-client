@@ -16,7 +16,7 @@
    <div class=" col-sm-3">
     <h5><u>Date from:</u></h5>
     <p class="input-group">
-        <input type="text" class="form-control" datepicker-popup="{{vm.format}}" ng-model="vm.afterDate" is-open="vm.status.opened" close-text="Close" />
+        <input type="text" class="form-control" datepicker-popup="{{vm.format}}" ng-model="vm.afterDate" is-open="vm.status.opened" min-date="vm.minDate" max-date="vm.maxDate" close-text="Close" />
         <span class="input-group-btn">
           <button type="button" class="btn btn-default" ng-click="vm.open($event,1)"><i class="glyphicon glyphicon-calendar"></i></button>
         </span>
@@ -25,7 +25,7 @@
   <div class="col-sm-3">
     <h5><u>Date to:</u></h5>
     <p class="input-group">
-      <input type="text" class="form-control" datepicker-popup="{{vm.format}}" ng-model="vm.beforeDate" is-open="vm.status.openedTwo" close-text="Close" />
+      <input type="text" class="form-control" datepicker-popup="{{vm.format}}" ng-model="vm.beforeDate" is-open="vm.status.openedTwo" min-date="vm.minDate" max-date="vm.maxDate" close-text="Close" />
       <span class="input-group-btn">
         <button type="button" class="btn btn-default" ng-click="vm.open($event,2)"><i class="glyphicon glyphicon-calendar"></i></button>
       </span>

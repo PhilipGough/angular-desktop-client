@@ -23,16 +23,11 @@ angular.module('BetterBetting.user.punditProfile', [])
 /**
  * Controller for this users view. Launches a model when user clicks on the pundits
  * statistics graph.
- * @param  {int} $stateParams - The id of the pundit whose profile user is viewing
- * @param  {factory} restFactory - Factory used to make GET request to the API
- * @param  {factory} statsFactory - Factory used to organise and format stats for graph
- * @param  {service} $modal - Modal used to generate event object when graph point clicked
  */
 .controller('PunditProfileCtrl', ['$stateParams', 'restFactory',
                 'statsFactory', '$modal', '$filter', '$timeout', 'ngDialog',
                        function($stateParams, restFactory, statsFactory,
                                         $modal, $filter, $timeout, ngDialog) {
-
     var vm = this;
     vm.format = 'dd-MMMM-yyyy';
     vm.loading = true;
@@ -54,32 +49,45 @@ angular.module('BetterBetting.user.punditProfile', [])
    /*
     * Initialise the calender with the calculated data
     */
-    vm.initilaiseCalenders = function() {
+    vm.initilaiseCalenders = function(afterDate) {
+      vm.minDate = afterDate;
+      vm.afterDate = new Date(afterDate);
+      vm.maxDate = new Date();
+      vm.beforeDate = vm.maxDate;
       vm.status = {
         opened: false,
         openedTwo: false
       };
     };
 
-  vm.initilaiseCalenders();
-
   vm.continue = function() {
-    var stats = statsFactory.sortEvents(vm.outright, vm.football, vm.racing);
+    console.log(vm.afterDate, vm.beforeDate)
+    statsFactory.populateLabels(vm.afterDate, vm.beforeDate);
     vm.series = [];
     vm.colors = [];
+    var stats = statsFactory.populateData();
+    vm.data = stats.data
+    var dataCount = 0;
     if(vm.outright){
       vm.series.push('Outright');
-      vm.colors.push('#b3b3cc')
+      vm.colors.push('#b3b3cc');
+      dataCount += 1;
+    } else {
+      vm.data.splice(dataCount, 1);
     }
     if(vm.football){
       vm.series.push('Football');
-      vm.colors.push('#85adad')
+      vm.colors.push('#85adad');
+      dataCount += 1;
+    } else {
+      vm.data.splice(dataCount, 1);
     }
      if(vm.racing){
       vm.series.push('Racing');
-      vm.colors.push('#b3e6ff')
+      vm.colors.push('#b3e6ff');
+    }else {
+      vm.data.splice(dataCount, 1);
     }
-    vm.data = stats.data
     vm.labels = stats.labels
   };
 
@@ -92,16 +100,16 @@ angular.module('BetterBetting.user.punditProfile', [])
     vm.onClick = function (points, evt) {
       var key = points[0].label;
       var eventsAtDate = statsFactory.getDict()[key]
-      ngDialog.open({
-        template: 'partials/user/punditEvenList.tpl.html',
-        controller: ['eventsAtDate', EventListCtrl],
-        controllerAs: 'vm',
-        resolve : {
-          eventsAtDate: function() { return eventsAtDate}
-        }
-      });
-
-      console.log(points, evt)
+      if(eventsAtDate){
+        ngDialog.open({
+          template: 'partials/user/punditEvenList.tpl.html',
+          controller: ['eventsAtDate', EventListCtrl],
+          controllerAs: 'vm',
+          resolve : {
+            eventsAtDate: function() { return eventsAtDate}
+          }
+        });
+      }
     };
 
   function EventListCtrl(eventsAtDate) {
@@ -126,7 +134,6 @@ angular.module('BetterBetting.user.punditProfile', [])
               requiredData: function () { return requiredEvent }
             }
           });
-
     }
   };
 
@@ -163,17 +170,16 @@ angular.module('BetterBetting.user.punditProfile', [])
       */
     vm.pundit = restFactory.makeGetRequest('pundit/'+$stateParams.punditId)
       .then(function(response) {
-        var stats = statsFactory.newFunction(response.events)
+        var stats = statsFactory.computeEventData(response.events)
         //var stats = statsFactory.sortEvents(response.events);
         vm.data = stats.data
         vm.labels = stats.labels
+        vm.initilaiseCalenders(statsFactory.getStartDate());
         $timeout(stopLoading, 1500);
       }, function(error){
          $timeout(stopLoading, 1500);
         console.log(error)
       });
-
-
 
     vm.alterSubscription = function() {
       restFactory.makePOSTrequest('subscription', {
