@@ -21,6 +21,7 @@ var BetterBetting = angular.module('BetterBetting', [
   'BetterBetting.register',
   'BetterBetting.pundit',
   'BetterBetting.pundit.event',
+  'BetterBetting.pundit.viewEventList',
   'BetterBetting.pundit.selection',
   'BetterBetting.pundit.createEvent',
   'BetterBetting.user',

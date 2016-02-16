@@ -39,6 +39,20 @@ angular.module('BetterBetting.pundit', [])
     $scope.toggleSidebar = function() {
         $scope.toggle = !$scope.toggle;
     };
+
+    $scope.items = [
+      {'text':'Create', 'link': 'pundit.event', 'icon': 'fa-pencil-square-o'},
+      {'text':'View', 'link': 'pundit.viewEvent', 'icon': 'fa-eye'}
+    ];
+
+  $scope.status = {
+    isopen: false
+  };
+
+  $scope.isToggled = false;
+  $scope.toggled = function() {
+    $scope.isToggled = ! $scope.isToggled;
+  };
 }])
 
 /**
@@ -46,11 +60,13 @@ angular.module('BetterBetting.pundit', [])
  * Display modal for a pundit when clicked by user in the list
  */
 .controller('PunditDashboardCtrl', ['$modal', 'getPublishedEvents','$filter',
-                    'getPundit', 'restFactory', 'statsFactory','$scope', 'ngDialog',
+                    'getPundit', 'restFactory', 'statsFactory','$scope', 'ngDialog', 'eventFactory',
                        function($modal, getPublishedEvents,$filter, getPundit,
-                                      restFactory, statsFactory, $scope, ngDialog) {
+                                      restFactory, statsFactory, $scope, ngDialog, eventFactory) {
+
    var vm = this;
    vm.punditEvents = getPublishedEvents;
+   eventFactory.setPunditEventList(vm.punditEvents);
    console.log(vm.punditEvents)
    vm.userRating = getPundit.rating;
    vm.subscriberNum = getPundit.subscribed.length;

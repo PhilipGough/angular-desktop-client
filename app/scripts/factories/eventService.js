@@ -14,6 +14,7 @@ angular.module('BetterBetting.pundit')
   var dataSet = [];
   var eventSelected = null;
   var marketCatalogueData = null;
+  var punditEvents = [];
 
   /**
    * Set genre of sport by id
@@ -180,6 +181,14 @@ angular.module('BetterBetting.pundit')
       'marketIds' : [marketId]
     }
     return angular.toJson(jsonPayload);
+  };
+
+  eventService.setPunditEventList = function(eventList) {
+    punditEvents = eventList;
+  };
+
+  eventService.getPunditEventList = function() {
+    return punditEvents;
   };
 
 

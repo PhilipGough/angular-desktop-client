@@ -59,6 +59,6 @@ angular.module('BetterBetting.user', [])
               console.log(data);
             })
   }
-}
+};
 
 }]);
