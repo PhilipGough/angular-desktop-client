@@ -15,7 +15,11 @@ angular.module('BetterBetting.pundit')
   return function(item) {
     var output = [];
     item.forEach(function(entry) {
-      filteredItem = {};
+      var filteredItem = {};
+      if(entry.adjustment) {
+        filteredItem.adjustment = entry.adjustment;
+      }
+      filteredItem.unseen = entry.unseen;
       for (var key in entry.meta_data) {
 
         if (entry.meta_data[key]['Event']) {

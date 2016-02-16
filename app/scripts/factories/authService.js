@@ -16,8 +16,11 @@ angular.module('BetterBetting')
     authFactory.isAuthenticated = function() {
       var token = this.getStoredToken();
       if(token) {
-        var params = this.parseJwt(token);
-        return Math.round(new Date().getTime() / 1000) <= params.exp;
+        var params = this.parseJWT(token);
+        if (Math.round(new Date().getTime() / 1000) <= params.exp) {
+          this.setUserData(token);
+          return true;
+        }
       } else {
           return false;
       }

@@ -47,7 +47,7 @@ angular.module('BetterBetting.login', [])
     else {
       $state.go('user.home');
     }
-  }
+  };
 
 
 }]);

@@ -1,5 +1,5 @@
 /**
- * Factor used to manipulate and sort request data going
+ * Factory used to manipulate and sort request data going
  * out as a POST request to the Betfair API
  */
 'use strict';

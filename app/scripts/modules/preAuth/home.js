@@ -9,11 +9,33 @@ angular.module('BetterBetting.home', [])
         controller: 'HomeCtrl',
         templateUrl: 'partials/preAuth/home.tpl.html'
       }
+    },
+    resolve : {
+       getAuthStatus : function(authFactory, $state, $q, $timeout) {
+            var authStatus = authFactory.isAuthenticated();
+            if(authStatus) {
+              var user = authFactory.getUserData();
+              if(user.hasPermission === 'True'){
+                 $timeout(function() {
+                    $state.go('pundit.dashboard')
+                  },0);
+                 return $q.reject()
+              }
+              else {
+                $timeout(function() {
+                    $state.go('user.home')
+                  },0);
+                return $q.reject()
+              }
+            }
+        }
     }
   });
 })
 
-.controller('HomeCtrl', ['$scope', function($scope) {
+.controller('HomeCtrl', ['$scope', 'getAuthStatus', 'authFactory', '$state',
+                 function($scope, getAuthStatus, authFactory, $state) {
+
     $scope.horse =  'assets/image/horse.jpg';
   }
 ]);

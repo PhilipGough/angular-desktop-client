@@ -10,6 +10,7 @@ var useref = require('gulp-useref');
 var runSequence = require('run-sequence');
 var browserSync = require('browser-sync');
 var pagespeed = require('psi');
+var templateCache = require('gulp-angular-templatecache');
 var reload = browserSync.reload;
 
 //Test Runner
@@ -106,13 +107,26 @@ gulp.task('preprocessDev', function(){
     .pipe($.size());
 });
 
+function prepareTemplates () {
+  return gulp.src('app/partials/**/*.tpl.html')
+    .pipe(templateCache())
+    .pipe(gulp.dest(config.get('build_destination')+'/scripts'));
+};
+
+gulp.task('templates', function () {
+  return gulp.src('app/partials/**/*.tpl.html')
+    .pipe(templateCache('templates.js'))
+    .pipe(gulp.dest('.tmp'));
+});
+
 // Scan Your HTML For Assets & Optimize Them
 gulp.task('html', function () {
-  var assets = useref.assets({searchPath: '{.tmp,app}'});
+  //var assets = useref.assets({searchPath: '{.tmp,app}'});
   var jsFilter = gulpFilter("**/*.js", {restore: true});
+  var test
   var cssFilter = gulpFilter("**/*.css", {restore: true});
-  return gulp.src('app/*.html')
-    .pipe(assets)
+  return gulp.src('app/**/*.html')
+    .pipe(useref({searchPath: '{.tmp,app}'}))
     // Concatenate And Minify JavaScript
     .pipe(jsFilter)
     //Prepare Angular For Minification
@@ -132,6 +146,8 @@ gulp.task('html', function () {
     // Minify Any HTML
     .pipe($.if('*.html', $.minifyHtml()))
     // Output Files
+    //prepareTemplates()
+    //.pipe($.angularTemplatecache())
     .pipe(gulp.dest(config.get('build_destination')))
     .pipe($.size({title: 'html'}));
 });
@@ -164,7 +180,6 @@ gulp.task('tdd', function (done) {
   }, done).start();
 });
 
-
 /**
   ** TASKS TO CALL
 **/
@@ -192,7 +207,7 @@ gulp.task('clean', ['cleantmp', 'cleandist', 'cleancordova']);
 
 // Build Production Files
 gulp.task('web', function (cb) {
-  runSequence(['clean'], ['styles'], ['jshint', 'copyServerSpecific', 'copyCommon', 'fonts', 'images'], ['html'], cb);
+  runSequence(['clean'], ['styles'], ['templates'], ['jshint', 'copyServerSpecific', 'copyCommon', 'fonts', 'images'], ['html'], cb);
 });
 
 

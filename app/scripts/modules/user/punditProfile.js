@@ -25,14 +25,11 @@ angular.module('BetterBetting.user.punditProfile', [])
  * statistics graph.
  */
 .controller('PunditProfileCtrl', ['$stateParams', 'restFactory',
-                'statsFactory', '$modal', '$filter', '$timeout', 'ngDialog',
+                'statsFactory', '$modal', '$filter', '$timeout', 'ngDialog', '$scope',
                        function($stateParams, restFactory, statsFactory,
-                                        $modal, $filter, $timeout, ngDialog) {
+                                        $modal, $filter, $timeout, ngDialog, $scope) {
     var vm = this;
-    vm.format = 'dd-MMMM-yyyy';
-    vm.loading = true;
-    vm.series = ['Outright', 'Football', 'Racing'];
-    vm.colors = ['#b3b3cc', '#85adad', '#b3e6ff'];
+    vm = statsFactory.initChart(vm);
     vm.tabs = [
         {'title': 'Overview', 'content' : 'partials/user/punditOverview.tpl.html' },
         {'title': 'Stats', 'content' : 'partials/user/punditStats.tpl.html'}
@@ -60,36 +57,16 @@ angular.module('BetterBetting.user.punditProfile', [])
       };
     };
 
-  vm.continue = function() {
-    console.log(vm.afterDate, vm.beforeDate)
-    statsFactory.populateLabels(vm.afterDate, vm.beforeDate);
-    vm.series = [];
-    vm.colors = [];
-    var stats = statsFactory.populateData();
-    vm.data = stats.data
-    var dataCount = 0;
-    if(vm.outright){
-      vm.series.push('Outright');
-      vm.colors.push('#b3b3cc');
-      dataCount += 1;
-    } else {
-      vm.data.splice(dataCount, 1);
-    }
-    if(vm.football){
-      vm.series.push('Football');
-      vm.colors.push('#85adad');
-      dataCount += 1;
-    } else {
-      vm.data.splice(dataCount, 1);
-    }
-     if(vm.racing){
-      vm.series.push('Racing');
-      vm.colors.push('#b3e6ff');
-    }else {
-      vm.data.splice(dataCount, 1);
-    }
-    vm.labels = stats.labels
-  };
+  vm.continue = statsFactory.getContinueFunc(vm);
+
+  // Temp patch for a bug in chart.js library
+  var $chart;
+  $scope.$on("create", function (event, chart) {
+  if (typeof $chart !== "undefined") {
+      $chart.destroy();
+      }
+    $chart = chart;
+  });
 
     /*
      * Function used to handle onMouse click event on graph
@@ -171,9 +148,10 @@ angular.module('BetterBetting.user.punditProfile', [])
     vm.pundit = restFactory.makeGetRequest('pundit/'+$stateParams.punditId)
       .then(function(response) {
         var stats = statsFactory.computeEventData(response.events)
-        //var stats = statsFactory.sortEvents(response.events);
-        vm.data = stats.data
-        vm.labels = stats.labels
+        if(stats){
+          vm.data = stats.data
+          vm.labels = stats.labels
+        }
         vm.initilaiseCalenders(statsFactory.getStartDate());
         $timeout(stopLoading, 1500);
       }, function(error){

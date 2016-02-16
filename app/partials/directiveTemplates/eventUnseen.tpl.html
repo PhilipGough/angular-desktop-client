@@ -1,0 +1,22 @@
+    <div class="table-responsive">
+      <table class="table table-hover table-condensed">
+        <thead>
+          <tr>
+            <th><a href="" ng-click="orderByField='event'; reverseSort = !reverseSort">Event</a></th>
+            <th><a href="" ng-click="orderByField='startTime'; reverseSort = !reverseSort">Market</a></th>
+            <th><a href="" ng-click="orderByField='selection'; reverseSort = !reverseSort">Selection</a></th>
+            <th><a href="" ng-click="orderByField='state'; reverseSort = !reverseSort">Result</a></th>
+            <th><a href="" ng-click="orderByField='state'; reverseSort = !reverseSort">Adjustment</a></th>
+          </tr>
+        </thead>
+        <tbody ng-repeat="event in vm.fltrEvents | filter:{event: !'unseen'} | orderBy:orderByField:reverseSort" ng-click="vm.show(event)">
+          <tr>
+            <td>{{event.event}}</td>
+            <td>{{event.market}}</td>
+            <td>{{event.selection}}</td>
+            <td>{{event.state}}</td>
+            <td>{{event.adjustment}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>

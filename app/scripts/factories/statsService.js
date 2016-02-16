@@ -15,27 +15,29 @@ angular.module('BetterBetting')
 
   stats.computeEventData = function(eventList){
     eventList = sortByDate(eventList);
-    var startDate = new Date(eventList[0].created_at);
-    afterDate = angular.copy(startDate);
-    var endDate = new Date();
-    stats.populateLabels(startDate, endDate, initStatValues);
-    angular.forEach(eventList, function(event) {
-        if(!(event.state == 'Pending')){
-          var dateKey = $filter('date')(event.created_at, 'd/M/yy');
-          if (!(dict[dateKey])) {
-            dict[dateKey] = [];
+    if (eventList.length > 1){
+      var startDate = new Date(eventList[0].created_at);
+      afterDate = angular.copy(startDate);
+      var endDate = new Date();
+      stats.populateLabels(startDate, endDate, initStatValues);
+      angular.forEach(eventList, function(event) {
+          if(!(event.state == 'Pending')){
+            var dateKey = $filter('date')(event.created_at, 'd/M/yy');
+            if (!(dict[dateKey])) {
+              dict[dateKey] = [];
+            }
+            dict[dateKey].push(event);
+            var adjustment = parseFloat(event.adjustment);
+            statistics.overall[dateKey] = statistics.overall[dateKey] + adjustment;
+            if(event.event_type_id === 1){
+              statistics.football[dateKey] = statistics.football[dateKey] + adjustment;
+            } else {
+              statistics.racing[dateKey] = statistics.racing[dateKey] + adjustment;
+            }
           }
-          dict[dateKey].push(event);
-          var adjustment = parseFloat(event.adjustment);
-          statistics.overall[dateKey] = statistics.overall[dateKey] + adjustment;
-          if(event.event_type_id === 1){
-            statistics.football[dateKey] = statistics.football[dateKey] + adjustment;
-          } else {
-            statistics.racing[dateKey] = statistics.racing[dateKey] + adjustment;
-          }
-        }
-    });
-    return stats.populateData();
+      });
+      return stats.populateData();
+  }
   };
 
 
@@ -73,7 +75,7 @@ angular.module('BetterBetting')
 
   stats.getStartDate = function() {
     return afterDate;
-  }
+  };
 
   function initStatValues(filteredDate) {
       statistics.overall[filteredDate] = 0;
@@ -111,10 +113,53 @@ angular.module('BetterBetting')
      }
    };
 
+  stats.getContinueFunc = function(vm){
+    var that = this;
+    return function() {
+    that.populateLabels(vm.afterDate, vm.beforeDate);
+    vm.series = [];
+    vm.colors = [];
+    var stats = that.populateData();
+    vm.data = stats.data
+    var dataCount = 0;
+    if(vm.outright){
+      vm.series.push('Outright');
+      vm.colors.push('#b3b3cc');
+      dataCount += 1;
+    } else {
+      vm.data.splice(dataCount, 1);
+    }
+    if(vm.football){
+      vm.series.push('Football');
+      vm.colors.push('#85adad');
+      dataCount += 1;
+    } else {
+      vm.data.splice(dataCount, 1);
+    }
+     if(vm.racing){
+      vm.series.push('Racing');
+      vm.colors.push('#b3e6ff');
+    }else {
+      vm.data.splice(dataCount, 1);
+    }
+    vm.labels = stats.labels
+  };
+  };
+
+  stats.initChart = function(vm) {
+    var that = this;
+    vm.format = 'dd-MMMM-yyyy';
+    vm.loading = true;
+    vm.series = ['Outright', 'Football', 'Racing'];
+    vm.colors = ['#b3b3cc', '#85adad', '#b3e6ff'];
+    return vm;
+  }
+
 
   stats.getDict = function(){
     return dict
   };
+
 
 return stats;
 }

@@ -70,10 +70,9 @@ angular.module('BetterBetting.pundit')
           return response.data;
 
       }, function(error){
-          if(error.status === 401){
-            $state.go('preAuth.home')
+          console.log(error.status)
+          return(error, error.status)
           }
-        }
     )};
   };
 

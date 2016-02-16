@@ -30,8 +30,12 @@ var BetterBetting = angular.module('BetterBetting', [
   'nya.bootstrap.select',
   'angularUtils.directives.dirPagination',
   'chart.js',
-  'ngDialog'
+  'ngDialog',
+  'templates'
 ]);
+
+// Module to be populated by gulp templateCache in production build
+angular.module('templates', []);
 
 
 BetterBetting.config(function($stateProvider, $locationProvider,$httpProvider,
@@ -41,6 +45,20 @@ BetterBetting.config(function($stateProvider, $locationProvider,$httpProvider,
   //allow local assets CSP
   $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|chrome-extension):|data:image\//);
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|chrome-extension):/);
+
+  $stateProvider.state('404', {
+    url: '/404',
+    data : {
+      restricted: false
+    },
+    abstract: false,
+    templateUrl: 'partials/errors/404.tpl.html',
+    controller: function ($scope, $rootScope, $state, $window) {
+      $scope.back = function() {
+        $window.history.back();
+      }
+    }
+  });
 
   $stateProvider.state('pundit', {
     url: '/pundit',
@@ -80,9 +98,10 @@ BetterBetting.config(function($stateProvider, $locationProvider,$httpProvider,
     }
   });
 
+  $httpProvider.interceptors.push('httpErrorResponseInterceptor');
+
   //$httpProvider.defaults.withCredentials = true;
   //No states are matched, use this as the fallback
-  //$locationProvider.html5Mode(true);
   $urlRouterProvider.otherwise('/');
   //Set Up Translation Provider
   $translateProvider
@@ -92,10 +111,14 @@ BetterBetting.config(function($stateProvider, $locationProvider,$httpProvider,
     .useSanitizeValueStrategy('escaped');
 });
 
-BetterBetting.run(function($rootScope, $state, $stateParams){
+BetterBetting.run(function($rootScope, $state, $stateParams, $templateCache){
    $rootScope.baseURL = 'http://localhost:5000/';
    $rootScope.$state = $state;
    $rootScope.$stateParams = $stateParams;
+   //$rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
+     //   $rootScope.previousState = from;
+       // $rootScope.previousParams = fromParams;
+    //});
 });
 
 BetterBetting.controller('MainCtrl', function(){
