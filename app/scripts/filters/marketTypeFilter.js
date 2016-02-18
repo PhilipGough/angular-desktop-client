@@ -1,3 +1,4 @@
+'use strict';
 angular.module('BetterBetting.pundit')
 
 .filter('marketFilter', function() {
@@ -5,7 +6,7 @@ angular.module('BetterBetting.pundit')
   return function(item) {
     item = item.split('_').join(' ');
     return item;
-  }
+  };
 })
 
 
@@ -24,27 +25,27 @@ angular.module('BetterBetting.pundit')
       for (var key in entry.meta_data) {
 
         if (entry.meta_data[key]['Event']) {
-          filteredItem.event = entry.meta_data[key]['Event']
+          filteredItem.event = entry.meta_data[key]['Event'];
         }
         if  (entry.meta_data[key]['Start Time']) {
-          filteredItem.startTime = entry.meta_data[key]['Start Time']
+          filteredItem.startTime = entry.meta_data[key]['Start Time'];
         }
         if  (entry.meta_data[key]['Market']) {
-          filteredItem.market = entry.meta_data[key]['Market']
+          filteredItem.market = entry.meta_data[key]['Market'];
         }
         if  (entry.meta_data[key]['Selection']) {
-          filteredItem.selection = entry.meta_data[key]['Selection']
+          filteredItem.selection = entry.meta_data[key]['Selection'];
         }
       }
       filteredItem.id = entry.id;
       filteredItem.state = entry.state;
       output.push(filteredItem);
 
-    })
+    });
 
 
     return output;
-  }
+  };
 })
 
 .filter('range', function() {
@@ -54,7 +55,7 @@ angular.module('BetterBetting.pundit')
     for (var i=min; i<max; i++){
       input.push(i.toString());
       if(  i !== (max - 1)){
-        input.push((i + 0.5).toString())
+        input.push((i + 0.5).toString());
       }
     }
     return input;

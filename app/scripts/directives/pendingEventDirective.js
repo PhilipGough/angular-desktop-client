@@ -22,7 +22,7 @@ function pendingEvent() {
     function linkFunc(scope, el, attr, ctrl) {
         //console.log(scope, el, attr)
     }
-};
+}
 
 
 function pendingEventPundit() {
@@ -38,6 +38,6 @@ function pendingEventPundit() {
     };
 
     return directive;
-};
+}
 
 

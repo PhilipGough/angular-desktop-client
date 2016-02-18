@@ -17,15 +17,15 @@ angular.module('BetterBetting.home', [])
               var user = authFactory.getUserData();
               if(user.hasPermission === 'True'){
                  $timeout(function() {
-                    $state.go('pundit.dashboard')
+                    $state.go('pundit.dashboard');
                   },0);
-                 return $q.reject()
+                 return $q.reject();
               }
               else {
                 $timeout(function() {
-                    $state.go('user.home')
+                    $state.go('user.home');
                   },0);
-                return $q.reject()
+                return $q.reject();
               }
             }
         }
@@ -33,8 +33,7 @@ angular.module('BetterBetting.home', [])
   });
 })
 
-.controller('HomeCtrl', ['$scope', 'getAuthStatus', 'authFactory', '$state',
-                 function($scope, getAuthStatus, authFactory, $state) {
+.controller('HomeCtrl', ['$scope', function($scope) {
 
     $scope.horse =  'assets/image/horse.jpg';
   }

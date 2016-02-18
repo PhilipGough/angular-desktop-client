@@ -54,7 +54,7 @@ angular.module('BetterBetting')
      */
     authFactory.markVisited = function() {
       user.welcome = false;
-    }
+    };
     /**
      * Request JSON Web Token from server
      */

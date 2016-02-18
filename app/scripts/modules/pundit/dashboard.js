@@ -23,7 +23,7 @@ angular.module('BetterBetting.pundit', [])
             return restFactory.makeGetRequest('event');
         },
          getPundit : function(restFactory) {
-            return restFactory.makeGetRequest('user')
+            return restFactory.makeGetRequest('user');
         }
     }
   });
@@ -50,6 +50,11 @@ angular.module('BetterBetting.pundit', [])
   };
 
   $scope.isToggled = false;
+  $scope.logout = function() {
+      localStorage.removeItem('betterTradingToken');
+      $state.go('preAuth.home');
+    };
+
   $scope.toggled = function() {
     $scope.isToggled = ! $scope.isToggled;
   };
@@ -66,7 +71,6 @@ angular.module('BetterBetting.pundit', [])
 
    var vm = this;
    vm.punditId = (getPundit.id).toString();
-   console.log('Here', vm.punditId)
    vm.punditEvents = getPublishedEvents;
    eventFactory.setPunditEventList(vm.punditEvents);
    vm.userRating = getPundit.rating;
@@ -109,7 +113,7 @@ angular.module('BetterBetting.pundit', [])
             };
         $scope.alerts.push(msg);
         authFactory.markVisited();
-    };
+    }
 
 
     $scope.addAlert = function() {

@@ -31,16 +31,16 @@ angular.module('BetterBetting.pundit.selection', [])
       eventFactory.setEvent(this.selectedEvent);
       betfairFactory.callAPIPost('market',eventFactory.getEventFilter())
       .then(function(data) {
-        vm.marketTypes = data
-        var obj = angular.fromJson(eventFactory.getMarketFilter())
+        vm.marketTypes = data;
+        var obj = angular.fromJson(eventFactory.getMarketFilter());
         if(obj.eventTypeIds[0] === '1'){
           vm.displayOptions = false;
         } else {
           vm.displayOptions = true;
         }
-      }), function() {
-
-      };
+      }, function(error) {
+        console.log(error);
+      });
     };
     /**
      * Continue on to next step of the wizard
@@ -61,9 +61,9 @@ angular.module('BetterBetting.pundit.selection', [])
         .then(function (data) {
           eventFactory.setMarketCatalogueData(data);
           $state.go('pundit.createEvent');
-        }), function() {
+        }, function() {
           console.log('Error');
-        };
+        });
     };
 
 }]);

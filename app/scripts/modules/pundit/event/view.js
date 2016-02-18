@@ -27,7 +27,7 @@ angular.module('BetterBetting.pundit.viewEventList', [])
       restFactory.makeGetRequest('event').then(function(data){
         vm.punditEvents = data;
          vm.fltrEvents = $filter('publishedEvenFilter')(vm.punditEvents);
-      })
+      });
  } else {
    vm.fltrEvents = $filter('publishedEvenFilter')(vm.punditEvents);
  }
@@ -48,47 +48,16 @@ angular.module('BetterBetting.pundit.viewEventList', [])
       $modal.open({
       animation: true,
       templateUrl: 'partials/modals/eventDetailed.html',
-      controller: ['$modalInstance', 'requiredData', EventModalCtrl],
+      controller: 'EventModalCtrl',
       controllerAs: 'vm',
       size: 'lg',
       resolve: {
-        requiredData: function () { return requiredData}
+        requiredData: function () {
+            return requiredData;
+          }
       }
     });
    };
-
-
-      /**
-    * Controls the modal for this event when event is clicked by user
-    */
-    function EventModalCtrl($modalInstance, requiredData) {
-      var vm = this;
-      vm.data = requiredData;
-      if(vm.data.runnerdata.Colors){
-          vm.data.colorSrc = vm.data.runnerdata.Colors;
-          delete vm.data.runnerdata.Colors;
-      }
-      if(vm.data.state === 'Winner') {
-        vm.alerts = [{
-            type: 'success',
-            msg: 'Winning bet! Total profit of ' + vm.data.adjustment + ' points !'}]
-      }
-      else if (vm.data.state === 'Loser') {
-        vm.alerts = [{
-            type: 'danger',
-            msg: 'Losing bet! Negative adjustment of ' + vm.data.adjustment + ' points !'}]
-      } else {
-        vm.alerts = [{
-            type: 'info',
-            msg: 'Result Pending! No results yet for this event!'}]
-      }
-
-      $modalInstance.close();
-
-      vm.closeAlert = function(index) {
-        vm.alerts.splice(index, 1);
-    };
-  };
 
  vm.pageController = function(){
 

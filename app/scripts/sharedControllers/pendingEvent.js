@@ -1,7 +1,7 @@
 'use strict';
 angular.module('BetterBetting')
 
-.controller('PendingEventController', [ '$modal', '$state', function($modal, $state){
+.controller('PendingEventController', [ '$modal', function($modal){
 
    var vm = this;
 
@@ -27,9 +27,15 @@ angular.module('BetterBetting')
       controllerAs: 'vm',
       size: 'lg',
       resolve: {
-        requiredData: function () { return requiredData}
+        requiredData: function () {
+          return requiredData;
         }
+      }
     });
+  };
+
+   vm.pageController = function(){
+
   };
 
 }]);

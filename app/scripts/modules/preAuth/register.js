@@ -17,7 +17,6 @@ angular.module('BetterBetting.register', [])
 
   $scope.user = {};
   $scope.user.pundit = false;
-  $scope.register = register;
 
   /**
    * Route user to correct state based on value in JWT
@@ -59,7 +58,9 @@ angular.module('BetterBetting.register', [])
         Flash.create('danger', message, 'custom-class');
 
       }
-  };
+  }
+
+  $scope.register = register;
 
 
 }])
@@ -72,7 +73,6 @@ angular.module('BetterBetting.register', [])
   var regFactory = {};
 
   regFactory.userRegistration = function(user) {
-    var punditRequest = false;
     return $http({
           method: 'post',
           url: $rootScope.baseURL +'user',
@@ -90,17 +90,6 @@ angular.module('BetterBetting.register', [])
   };
 
     return regFactory;
-    // private functions
-
-    function handleSuccess(res) {
-        return res.data;
-    }
-
-    function handleError(error) {
-        return function () {
-            return { success: false, message: error };
-        };
-    }
 }]);
 
 

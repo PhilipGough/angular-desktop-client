@@ -113,7 +113,7 @@ angular.module('BetterBetting.pundit')
     }
     catFilter.eventIds = [eventSelected.event.id];
     return angular.toJson(catFilter);
-  }
+  };
 
   eventService.getMarketCatalogueData = function() {
     return marketCatalogueData;
@@ -140,15 +140,15 @@ angular.module('BetterBetting.pundit')
     polishedObj.metaData = [];
 
     if(eventType === '1') {
-      polishedObj.metaData.push({'Competition' : eventData.selectedMarket.competition.name})
+      polishedObj.metaData.push({'Competition' : eventData.selectedMarket.competition.name});
     }
 
-    polishedObj.metaData.push({'Selection' : eventData.selectedResult.runnerName})
-    polishedObj.metaData.push({ 'Event' : eventData.selectedMarket.event.name})
-    polishedObj.metaData.push({'Start Time' : $filter('date')(eventData.selectedMarket.marketStartTime, 'd/M/yy h:mm a', 'GMT')})
-    polishedObj.metaData.push({'Market' : eventData.selectedMarket.marketName})
-    polishedObj.metaData.push({ 'Bet Type' : eventData.setChoice})
-    polishedObj.metaData.push({ 'Points Recommended' : eventData.setStake})
+    polishedObj.metaData.push({'Selection' : eventData.selectedResult.runnerName});
+    polishedObj.metaData.push({ 'Event' : eventData.selectedMarket.event.name});
+    polishedObj.metaData.push({'Start Time' : $filter('date')(eventData.selectedMarket.marketStartTime, 'd/M/yy h:mm a', 'GMT')});
+    polishedObj.metaData.push({'Market' : eventData.selectedMarket.marketName});
+    polishedObj.metaData.push({ 'Bet Type' : eventData.setChoice});
+    polishedObj.metaData.push({ 'Points Recommended' : eventData.setStake});
 
     if(eventType === '7') {
       polishedObj.metaData[1]['Event'] = eventData.selectedMarket.event.venue;
@@ -158,8 +158,8 @@ angular.module('BetterBetting.pundit')
         'Jockey' : run.JOCKEY_NAME,
         'Trainer' : run.TRAINER_NAME,
         'Form' : run.FORM
-      }
-      polishedObj.colorSrc = 'http://content-cache.betfair.com/feeds_images/Horses/SilkColours/'+run.COLOURS_FILENAME
+      };
+      polishedObj.colorSrc = 'http://content-cache.betfair.com/feeds_images/Horses/SilkColours/'+run.COLOURS_FILENAME;
     }
     polishedObj.eventTime = eventData.selectedMarket.event.openDate;
     polishedObj.priceData = eventData.priceData;
@@ -169,7 +169,7 @@ angular.module('BetterBetting.pundit')
       'eventTypeId' : eventData.selectedMarket.eventType.id,
       'marketId' : eventData.selectedMarket.marketId,
       'eventId' : eventData.selectedMarket.event.id
-    }
+    };
 
     return polishedObj;
   };
@@ -179,7 +179,7 @@ angular.module('BetterBetting.pundit')
   eventService.setMarketBookPayload = function(marketId) {
     var jsonPayload = {
       'marketIds' : [marketId]
-    }
+    };
     return angular.toJson(jsonPayload);
   };
 

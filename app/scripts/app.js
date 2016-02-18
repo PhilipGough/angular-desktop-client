@@ -26,6 +26,8 @@ var BetterBetting = angular.module('BetterBetting', [
   'BetterBetting.pundit.createEvent',
   'BetterBetting.user',
   'BetterBetting.user.punditProfile',
+  'BetterBetting.user.punditList',
+  'BetterBetting.user.eventList',
   'flash',
   'ngMessages',
   'nya.bootstrap.select',
@@ -42,6 +44,7 @@ angular.module('templates', []);
 BetterBetting.config(function($stateProvider, $locationProvider,$httpProvider,
                      $urlRouterProvider, $translateProvider, $compileProvider){
 
+  $locationProvider.html5Mode(true);
 
   //allow local assets CSP
   $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|chrome-extension):|data:image\//);
@@ -57,7 +60,7 @@ BetterBetting.config(function($stateProvider, $locationProvider,$httpProvider,
     controller: function ($scope, $rootScope, $state, $window) {
       $scope.back = function() {
         $window.history.back();
-      }
+      };
     }
   });
 
@@ -113,13 +116,10 @@ BetterBetting.config(function($stateProvider, $locationProvider,$httpProvider,
 });
 
 BetterBetting.run(function($rootScope, $state, $stateParams, $templateCache){
-   $rootScope.baseURL = 'http://localhost:5000/';
+   //$rootScope.baseURL = 'http://localhost:5000/';
+   $rootScope.baseURL = 'http://52.48.120.21/'
    $rootScope.$state = $state;
    $rootScope.$stateParams = $stateParams;
-   //$rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
-     //   $rootScope.previousState = from;
-       // $rootScope.previousParams = fromParams;
-    //});
 });
 
 BetterBetting.controller('MainCtrl', function(){

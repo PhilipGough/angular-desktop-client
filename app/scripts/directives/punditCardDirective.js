@@ -17,6 +17,6 @@ function punditTabCard() {
     };
 
     return directive;
-};
+}
 
 

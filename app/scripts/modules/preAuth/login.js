@@ -16,9 +16,22 @@ angular.module('BetterBetting.login', [])
 
 .controller('LoginCtrl', [ '$scope', 'Flash', 'authFactory', '$state',
   function($scope, Flash, authFactory, $state){
-    /**
-     * Request a JSON Web Token from the API and store in local storage
-     */
+
+  /*
+   * Route user to correct app based on permission
+   */
+  function routeUser(userData) {
+    if(userData.hasPermission === 'True'){
+      $state.go('pundit.dashboard');
+    }
+    else {
+      $state.go('user.home');
+    }
+  }
+
+  /**
+    * Request a JSON Web Token from the API and store in local storage
+    */
   $scope.login = function(user) {
     authFactory.getAuthToken(user.email, user.password)
     .success(function(response) {
@@ -37,17 +50,7 @@ angular.module('BetterBetting.login', [])
     email:  '',
     password: ''
   };
-  /*
-   * Route user to correct app based on permission
-   */
-  function routeUser(userData) {
-    if(userData.hasPermission === 'True'){
-      $state.go('pundit.dashboard');
-    }
-    else {
-      $state.go('user.home');
-    }
-  };
+
 
 
 }]);

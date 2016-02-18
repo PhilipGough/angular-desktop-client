@@ -20,7 +20,7 @@ angular.module('BetterBetting.pundit.event', [])
 /**
  * Controller for this pundit view.
  */
-.controller('PunditEventCtrl', ['$scope', 'betfairFactory', 'eventFactory', 'Flash', '$state', '$timeout',
+.controller('PunditEventCtrl', ['$scope','betfairFactory', 'eventFactory', 'Flash', '$state', '$timeout',
                     function($scope, betfairFactory, eventFactory, Flash, $state, $timeout) {
   var vm = this;
   (function init() {
@@ -59,7 +59,7 @@ angular.module('BetterBetting.pundit.event', [])
    * Function which watches for changes to value in dropdown menu an make
    * appropriate HTTP request to reflect this change as needed.
    */
-   $scope.$watch(function watchSelectedSport( scope ) {
+   $scope.$watch(function watchSelectedSport() {
       return( vm.selectedSport );
     },  function handleSportChange( newValue ) {
         if(angular.isDefined(newValue) && newValue !== null){

@@ -23,10 +23,12 @@ angular.module('BetterBetting')
       controllerAs: 'vm',
       size: 'lg',
       resolve: {
-        requiredData: function () { return requiredEvent }
+        requiredData: function () {
+            return requiredEvent;
+           }
       }
     });
-  }
+  };
 
 
 }]);

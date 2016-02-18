@@ -23,10 +23,14 @@
 /**
  * Controller to alter the width of the sidebar
  */
- .controller('UserHomeCtrl', ['$scope', '$document', function($scope, $document) {
+ .controller('UserHomeCtrl', ['$scope', '$state', function($scope, $state) {
     $scope.toggle = true;
     $scope.toggleSidebar = function() {
         $scope.toggle = !$scope.toggle;
+    };
+    $scope.logout = function() {
+      localStorage.removeItem('betterTradingToken');
+      $state.go('preAuth.home');
     };
 }])
 
@@ -53,45 +57,51 @@
    */
    restFactory.makeGetRequest('event')
    .then(function(data){
-    var allData = data;
-    var pendingResults = [];
-    angular.forEach(data, function(event){
-      if(event.state === 'Pending') {
-        pendingResults.push(event);
-      }
-    });
-    if(pendingResults.length > 0){
-      vm.addAlert('You have '+ pendingResults.length.toString()+ ' active events pending', 'success');
-    } else {
-      vm.addAlert('There are no pending events!', 'danger');
-    }
-    vm.fltrEvents = $filter('publishedEvenFilter')(pendingResults);
-
-
-    restFactory.makeGetRequest('events/unseen')
-    .then(function(data){
-      vm.unseenEventIds = data;
-      vm.unseenEventFeed = [];
-      angular.forEach(vm.unseenEventIds, function(event){
-        console.log(event);
-        for(var i=0 ; i < allData.length ; i++){
-          if(allData[i].id === parseInt(event)) {
-            vm.unseenEventFeed.push(allData[i]);
-            continue;
-          }
+      var allData = data;
+      var pendingResults = [];
+      // Mark which events havent run yet
+      angular.forEach(data, function(event){
+        if(event.state === 'Pending') {
+          pendingResults.push(event);
         }
-      })
-      if(vm.unseenEventFeed.length > 0){
-        vm.addAlert('You have received '+ vm.unseenEventFeed.length.toString()+ ' new events since your last visit', 'success');
+      });
+      // Use the result to generate alerts
+      if(pendingResults.length > 0){
+        vm.addAlert('You have '+ pendingResults.length.toString()+ ' active events pending', 'success');
       } else {
-        vm.addAlert('No events have been published since your last visit!', 'danger');
+        vm.addAlert('There are no pending events!', 'danger');
       }
-      vm.requiredData = {
-        all: allData,
-        filtered: vm.fltrEvents
-      };
-      vm.dataReady = true;
-    });
+      vm.fltrEvents = $filter('publishedEvenFilter')(pendingResults);
+
+      // Hit the Redis server to find which of these events havent been seen before
+      restFactory.makeGetRequest('events/unseen')
+        .then(function(data){
+            vm.unseenEventIds = data;
+            vm.unseenEventFeed = [];
+            // Mark the events that have not been seen before
+            angular.forEach(vm.unseenEventIds, function(event){
+              for(var i=0 ; i < allData.length ; i++){
+                if(allData[i].id === parseInt(event)) {
+                  vm.unseenEventFeed.push(allData[i]);
+                  continue;
+                }
+              }
+            });
+            if(vm.unseenEventFeed.length > 0) {
+                vm.addAlert('You have received '+ vm.unseenEventFeed.length.toString()+ ' new events since your last visit', 'success');
+            } else {
+                  vm.addAlert('No events have been published since your last visit!', 'danger');
+            }
+            // Send the required data to the directive
+            vm.requiredData = {
+              all: allData,
+              filtered: vm.fltrEvents
+            };
+            vm.dataReady = true;
+        });
+  }, function(error){
+    // HTTP Request to server has failed
+       vm.addAlert('There was a problem accessing data!', 'danger');
   });
 
 }]);

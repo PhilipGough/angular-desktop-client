@@ -21,9 +21,9 @@ angular.module('BetterBetting.pundit.createEvent', [])
     var vm = this;
     vm.marketList = eventFactory.getMarketCatalogueData();
     vm.betType = ['Back','Lay'];
-    var list = []
+    var list = [];
     list = $filter('range')(list,0,6);
-    vm.stakeValue = list
+    vm.stakeValue = list;
     /**
      * Make HTTP request for price data on the selection in this event
      * @return {Array} List of objects containing runner data
@@ -33,9 +33,9 @@ angular.module('BetterBetting.pundit.createEvent', [])
       betfairFactory.callAPIPost('market/book', priceDataPayload)
       .then( function(data) {
         vm.marketBook = data[0];
-      }), function() {
+      }, function() {
 
-      };
+      });
     };
     /**
      * Iterate through the list of runners to find the selection id
@@ -72,6 +72,24 @@ angular.module('BetterBetting.pundit.createEvent', [])
       priceObj['Current lay price'] = exchangePriceLay;
       vm.priceData = priceObj;
     };
+
+   /**
+    * Function to create the event and send payload to the API
+    */
+    function CreateEventModalCtrl($modalInstance, requiredData) {
+      var vm = this;
+      vm.data = requiredData;
+
+      vm.publishEvent = function() {
+        betfairFactory.callAPIPost('event', vm.data)
+        .then(function(data) {
+          $state.go('pundit.dashboard');
+        }, function(error) {
+          console.log(error);
+        });
+        $modalInstance.close();
+     };
+}
     /**
      * Launch a model to allow the user to persist this selection to
      * the database
@@ -82,30 +100,16 @@ angular.module('BetterBetting.pundit.createEvent', [])
       $modal.open({
       animation: true,
       templateUrl: 'partials/modals/eventModal.html',
-      controller: ['$modalInstance', 'requiredData', EventModalCtrl],
+      controller: ['$modalInstance', 'requiredData', CreateEventModalCtrl],
       controllerAs: 'vm',
       size: 'lg',
       resolve: {
-        requiredData: function () { return requiredData}
+        requiredData: function () {
+            return requiredData;
+          }
       }
     });
-  }
-   /**
-    * Function to create the event and send payload to the API
-    */
-    function EventModalCtrl($modalInstance, requiredData) {
-      var vm = this;
-      vm.data = requiredData;
+  };
 
-      vm.publishEvent = function() {
-        betfairFactory.callAPIPost('event', vm.data)
-        .then(function(data) {
-          $state.go('pundit.dashboard')
-        }), function(error) {
-          console.log(error);
-        }
-        $modalInstance.close();
-     }
-}
 
 }]);

@@ -1,39 +1,7 @@
-<div class="row">
-  <div class="col-lg-6">
-    <rd-widget>
-    <rd-widget-header icon="fa-calendar" title="Events">
-  </rd-widget-header>
-  <rd-widget-body classes="medium no-padding">
-  <div class="table-responsive">
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th><a href="" ng-click="orderByField='event'; reverseSort = !reverseSort">Event</a></th>
-          <th><a href="" ng-click="orderByField='time'; reverseSort = !reverseSort">Start Time</a></th>
-          <th><a href="" ng-click="orderByField='startTime'; reverseSort = !reverseSort">Market</a></th>
-          <th><a href="" ng-click="orderByField='selection'; reverseSort = !reverseSort">Selection</a></th>
-          <th><a href="" ng-click="orderByField='state'; reverseSort = !reverseSort">Result</a></th>
-        </tr>
-      </thead>
-      <tbody ng-repeat="event in vm.fltrEvents | orderBy:orderByField:reverseSort" ng-click="vm.show(event)">
-        <tr>
-          <td>{{event.event}}</td>
-          <td>{{event.startTime}}</td>
-          <td>{{event.market}}</td>
-          <td>{{event.selection}}</td>
-          <td>{{event.state}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</rd-widget-body>
-</rd-widget>
-</div>
-</div>
 
-
-<div class="row">
-  <div class="col-lg-6">
+<div class="row profile">
+<div class="col-sm-3"></div>
+  <div class="col-sm-6">
     <rd-widget>
     <rd-widget-header icon="fa-users" title="Pundits">
     <input type="text" ng-model="vm.q" class="form-control input-sm" placeholder="Search">
@@ -43,25 +11,29 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <th><a href="" ng-click="orderByField='username'; reverseSort = !reverseSort">Username</a></th>
-          <th><a href="" ng-click="orderByField='rating'; reverseSort = !reverseSort">Current Rating</a></th>
-        </tr>
-      </thead>
-      <tbody dir-paginate="pundit in vm.pundits | filter:vm.q | itemsPerPage: 5 | orderBy:orderByField:reverseSort" ui-sref="user.punditProfile({punditId: pundit.id})">
-        <tr>
-          <td>{{pundit.username}}</td>
-          <td>{{pundit.rating}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+         <th><a href="" ng-click="orderByField='username'; reverseSort = !reverseSort">Username</a></th>
+         <th><a href="" ng-click="orderByField='rating'; reverseSort = !reverseSort">Current Rating</a></th>
+         <th><a href="" ng-click="orderByField='rating'; reverseSort = !reverseSort">Subscribed</a></th>
+       </tr>
+     </thead>
+     <tbody dir-paginate="pundit in vm.pundits | filter:vm.q | itemsPerPage: 6 | orderBy:orderByField:reverseSort" ui-sref="user.punditProfile({punditId: pundit.id})">
+      <tr>
+        <td>{{pundit.username}}</td>
+        <td>{{pundit.rating}}</td>
+        <td ng-if="pundit.isSubscribed"><i class="fa fa-check"></i></td>
+        <td ng-if="!pundit.isSubscribed"><i class="fa fa-times"></i></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 </rd-widget-body>
 <div ng-controller="vm.paginationController">
   <div class="text-center">
     <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="partials/pagination/dirPagination.tpl.html"></dir-pagination-controls>
   </div>
 </div>
-<rd-widget>
+</rd-widget>
 </div>
+<div class="col-sm-3"></div>
 
 </div>
