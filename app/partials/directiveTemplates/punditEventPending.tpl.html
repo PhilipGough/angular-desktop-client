@@ -7,7 +7,6 @@
         <th><a href="" ng-click="orderByField='time'; reverseSort = !reverseSort">Start Time</a></th>
         <th><a href="" ng-click="orderByField='startTime'; reverseSort = !reverseSort">Market</a></th>
         <th><a href="" ng-click="orderByField='selection'; reverseSort = !reverseSort">Selection</a></th>
-        <th><a href="" ng-click="orderByField='pundit.username'; reverseSort = !reverseSort">Pundit</a></th>
       </tr>
     </thead>
     <tbody ng-repeat="event in vm.fltrEvents | filter:{state:'Pending'} | orderBy:orderByField:reverseSort" ng-click="vm.show(event)">
@@ -16,7 +15,6 @@
         <td>{{event.startTime}}</td>
         <td>{{event.market}}</td>
         <td>{{event.selection}}</td>
-        <td><a ui-sref="user.punditProfile({punditId: event.pundit.id})">{{event.pundit.username}}</a></td>
       </tr>
     </tbody>
   </table>

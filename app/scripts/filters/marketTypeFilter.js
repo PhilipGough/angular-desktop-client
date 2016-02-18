@@ -20,6 +20,7 @@ angular.module('BetterBetting.pundit')
         filteredItem.adjustment = entry.adjustment;
       }
       filteredItem.unseen = entry.unseen;
+      filteredItem.pundit = entry.pundit;
       for (var key in entry.meta_data) {
 
         if (entry.meta_data[key]['Event']) {

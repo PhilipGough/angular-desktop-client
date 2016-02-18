@@ -5,77 +5,64 @@
 </div>
 
 <div class="row">
+  <div class="col-lg-3 col-md-6 col-xs-12"></div>
   <div class="col-lg-3 col-md-6 col-xs-12">
     <rd-widget>
-    <rd-widget-body>
-    <div class="widget-icon green pull-left">
-      <i class="fa fa-users"></i>
-    </div>
-    <div class="title">{{vm.subscriberNum}}</div>
-    <div class="comment">Subscribers</div>
-  </rd-widget-body>
-</rd-widget>
-</div>
-<div class="col-lg-3 col-md-6 col-xs-12">
-  <rd-widget>
-  <rd-widget-body>
-  <div class="widget-icon blue pull-left">
-    <i class="fa fa-star"></i>
+      <rd-widget-body>
+        <div class="widget-icon green pull-left"><i class="fa fa-users"></i></div>
+        <div class="title">{{vm.subscriberNum}}</div>
+        <div class="comment">Subscribers</div>
+      </rd-widget-body>
+    </rd-widget>
   </div>
-  <div class="title">{{vm.userRating}}</div>
-  <div class="comment">Current Rating</div>
-</rd-widget-body>
-</rd-widget>
-</div>
+
+  <div class="col-lg-3 col-md-6 col-xs-12">
+    <rd-widget>
+      <rd-widget-body>
+        <div class="widget-icon blue pull-left"><i class="fa fa-star"></i></div>
+        <div class="title">{{vm.userRating}}</div>
+        <div class="comment">Current Rating</div>
+      </rd-widget-body>
+    </rd-widget>
+  </div>
+  <div class="col-lg-3 col-md-6 col-xs-12"></div>
 </div>
 
 <div class="row">
-  <div ng-if="vm.hasPendingEvents" class="col-lg-6">
+   <div class="col-lg-3 col-md-6 col-xs-12"></div>
+   <div class="col-sm-6">
     <rd-widget>
-    <rd-widget-header icon="fa-calendar" title="Pending Events">
-  </rd-widget-header>
-  <rd-widget-body classes="medium no-padding">
-  <event-pending></event-pending>
-</rd-widget-body>
-</rd-widget>
+      <rd-widget-header icon="fa-users" title="Subscribers"></rd-widget-header>
+      <rd-widget-body classes="small no-padding"><my-subscribers></my-subscribers></rd-widget-body>
+    </rd-widget>
+  </div>
+  <div class="col-lg-3 col-md-6 col-xs-12"></div>
 </div>
-<div class="col-lg-6">
-  <rd-widget>
-  <rd-widget-header icon="fa-users" title="Subscribers">
-  <input type="text" placeholder="Search" class="form-control input-sm" />
-</rd-widget-header>
-<rd-widget-body classes="medium no-padding">
-<my-subscribers></my-subscribers>
-</rd-widget-body>
-</rd-widget>
-</div>
+
+<div class="row" ng-if="vm.hasPendingEvents">
+  <div class="col-lg-1 col-md-1 col-sm-1"></div>
+  <div class="col-lg-10 col-md-10 col-sm-10">
+    <rd-widget>
+      <rd-widget-header icon="fa-calendar" title="Pending Events"></rd-widget-header>
+      <rd-widget-body><pending-event-pundit input="vm.requiredData"></pending-event-pundit></rd-widget-body>
+    </rd-widget>
+  </div>
 </div>
 
 <div class="row" ng-if="vm.hasUnseenEvents">
-<div class="col-lg-1 col-md-1 col-sm-1"></div>
-  <div class="col-lg-10">
+  <div class="col-lg-1 col-md-1 col-sm-1"></div>
+  <div class="col-lg-10 col-md-10 col-sm-10">
     <rd-widget>
-    <rd-widget-header icon="fa-calendar" title="Results in since last visit">
-  </rd-widget-header>
-  <rd-widget-body classes="medium no-padding">
-  <event-unseen></event-unseen>
-</rd-widget-body>
-</rd-widget>
-<div class="col-lg-1 col-md-1 col-sm-1"></div>
-</div>
+      <rd-widget-header icon="fa-calendar" title="Results in since last visit"></rd-widget-header>
+      <rd-widget-body><event-unseen></event-unseen></rd-widget-body>
+    </rd-widget>
+  </div>
+  <div class="col-lg-1 col-md-1 col-sm-1"></div>
 </div>
 
+<pundit-tab-card tabs="vm.tabs" resource="vm.punditId"></pundit-tab-card>
 
-<div class="col-lg-1 col-md-1 col-sm-1"></div>
-<div class="col-lg-10 col-md-10 col-sm-10">
-  <div class="row profile">
 
-    <tabset>
-      <tab ng-repeat="tab in vm.tabs" heading="{{tab.title}}" active="tab.active" disable="tab.disabled">
-        <div ng-include="tab.content"></div>
-      </tab>
-    </tabset>
-<div class="col-lg-1 col-md-1 col-sm-1"></div>
 
 
 

@@ -1,65 +1,25 @@
-<div class="row">
-  <div class="col-lg-6">
-    <rd-widget>
-    <rd-widget-header icon="fa-calendar" title="Events">
-  </rd-widget-header>
-  <rd-widget-body classes="medium no-padding">
-  <div class="table-responsive">
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th><a href="" ng-click="orderByField='event'; reverseSort = !reverseSort">Event</a></th>
-          <th><a href="" ng-click="orderByField='time'; reverseSort = !reverseSort">Start Time</a></th>
-          <th><a href="" ng-click="orderByField='startTime'; reverseSort = !reverseSort">Market</a></th>
-          <th><a href="" ng-click="orderByField='selection'; reverseSort = !reverseSort">Selection</a></th>
-          <th><a href="" ng-click="orderByField='state'; reverseSort = !reverseSort">Result</a></th>
-        </tr>
-      </thead>
-      <tbody ng-repeat="event in vm.fltrEvents | orderBy:orderByField:reverseSort" ng-click="vm.show(event)">
-        <tr>
-          <td>{{event.event}}</td>
-          <td>{{event.startTime}}</td>
-          <td>{{event.market}}</td>
-          <td>{{event.selection}}</td>
-          <td>{{event.state}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</rd-widget-body>
-</rd-widget>
-</div>
-<div class="col-lg-6">
-  <rd-widget>
-  <rd-widget-header icon="fa-users" title="Pundits">
-    <input type="text" ng-model="vm.q" class="form-control input-sm" placeholder="Search">
-</rd-widget-header>
-<rd-widget-body classes="medium no-padding">
-<div class="table-responsive">
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th><a href="" ng-click="orderByField='username'; reverseSort = !reverseSort">Username</a></th>
-        <th><a href="" ng-click="orderByField='rating'; reverseSort = !reverseSort">Current Rating</a></th>
-      </tr>
-    </thead>
-    <tbody dir-paginate="pundit in vm.pundits | filter:vm.q | itemsPerPage: 5 | orderBy:orderByField:reverseSort" ui-sref="user.punditProfile({punditId: pundit.id})">
-      <tr>
-        <td>{{pundit.username}}</td>
-        <td>{{pundit.rating}}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-</rd-widget-body>
-<div ng-controller="vm.paginationController">
-  <div class="text-center">
-    <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="partials/pagination/dirPagination.tpl.html"></dir-pagination-controls>
+<div class="row alerts-container" data-ng-show="vm.alerts.length">
+  <div class="col-xs-12">
+    <alert data-ng-repeat="alert in vm.alerts" type="{{alert.type}}" close="vm.closeAlert($index)">{{alert.msg}}</alert>
   </div>
 </div>
-<rd-widget>
+
+<div ng-if="vm.dataReady">
+  <div ng-repeat="event in  vm.unseenEventFeed">
+    <div user-unseen-event event="event"></div>
+  </div>
+  <div class="row" ng-if="vm.fltrEvents">
+    <div class="col-lg-1 col-md-1 col-sm-1"></div>
+    <div class="col-lg-10 col-md-10 col-sm-10">
+      <rd-widget>
+      <rd-widget-header icon="fa-calendar" title="Pending Events"></rd-widget-header>
+      <rd-widget-body><pending-event input="vm.requiredData"></pending-event></rd-widget-body>
+    </rd-widget>
+  </div>
+  <div class="col-lg-1 col-md-1 col-sm-1"></div>
 </div>
 </div>
+
 
 
 

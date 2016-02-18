@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="col-lg-1 col-md-1 col-sm-1"></div>
+  <div class="col-lg-10 col-md-10 col-sm-10">
+    <div class="row profile">
+
+      <tabset>
+        <tab ng-repeat="tab in vm.tabs" heading="{{tab.title}}" active="tab.active" disable="tab.disabled">
+          <div ng-include="tab.content"></div>
+        </tab>
+      </tabset>
+      <div class="col-lg-1 col-md-1 col-sm-1"></div>
+    </div>
+  </div>
+</div>
+

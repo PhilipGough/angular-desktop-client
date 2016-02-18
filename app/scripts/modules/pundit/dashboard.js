@@ -65,192 +65,30 @@ angular.module('BetterBetting.pundit', [])
                                       restFactory, statsFactory, $scope, ngDialog, eventFactory) {
 
    var vm = this;
+   vm.punditId = (getPundit.id).toString();
+   console.log('Here', vm.punditId)
    vm.punditEvents = getPublishedEvents;
    eventFactory.setPunditEventList(vm.punditEvents);
-   console.log(vm.punditEvents)
    vm.userRating = getPundit.rating;
    vm.subscriberNum = getPundit.subscribed.length;
    vm.subscribers = getPundit.subscribed;
    vm.fltrEvents = $filter('publishedEvenFilter')(vm.punditEvents);
    vm.hasUnseenEvents = false;
    vm.hasPendingEvents = false;
+
    angular.forEach(vm.fltrEvents, function(event){
     if(event.state === 'Pending'){
       vm.hasPendingEvents = true;
-    } else if(event.unseen === true) {
-      console.log('Here', event)
-      vm.hasUnseenEvents = true;
-    }
+    }   else if(event.unseen === true) {
+          vm.hasUnseenEvents = true;
+        }
    });
-   vm.tabs = [
-        {'title': 'Stats', 'content' : 'partials/user/punditStats.tpl.html'}
-        ]
 
-
-  /**
-   * Allows user to click an area of chart
-   * @param  {event} event - Mouse click event
-   */
-   vm.show = function(event) {
-
-    for(var i = 0 ; i < vm.punditEvents.length ; i++) {
-        if(vm.punditEvents[i].id === event.id) {
-            var requiredData = vm.punditEvents[i];
-            break;
-        }
-    }
-
-      $modal.open({
-      animation: true,
-      templateUrl: 'partials/modals/eventDetailed.html',
-      controller: ['$modalInstance', 'requiredData', EventModalCtrl],
-      controllerAs: 'vm',
-      size: 'lg',
-      resolve: {
-        requiredData: function () { return requiredData}
-      }
-    });
-   };
-
-   /*
-    * Initialise the chart from the service
-    */
-   vm = statsFactory.initChart(vm);
-
-    vm.open = function($event, calender) {
-      if(calender === 1){
-        vm.status.opened = true;
-      } else {
-        vm.status.openedTwo = true;
-      }
-    };
-    /*
-     * Temp patch to bug in chart library
-     */
-    var $chart;
-      $scope.$on("create", function (event, chart) {
-      if (typeof $chart !== "undefined") {
-      $chart.destroy();
-      }
-      $chart = chart;
-    });
-
-    /*
-     * Function used to handle onMouse click event on graph
-     * Produces a modal for the relevant event
-     * @param  {array} points - The area of points related to mouse click
-     * @param  {event} evt - The mouse click event
-     */
-    vm.onClick = function (points, evt) {
-      var key = points[0].label;
-      var eventsAtDate = statsFactory.getDict()[key]
-      if(eventsAtDate){
-        ngDialog.open({
-          template: 'partials/user/punditEvenList.tpl.html',
-          controller: ['eventsAtDate', EventListCtrl],
-          controllerAs: 'vm',
-          resolve : {
-            eventsAtDate: function() { return eventsAtDate}
-          }
-        });
-      }
-    };
-
-  /**
-    *  Resolves the pundit information via HTTP request
-    *  Uses the stats service to organise the object
-    */
-    vm.pundit = restFactory.makeGetRequest('pundit/'+getPundit.id)
-      .then(function(response) {
-        var stats = statsFactory.computeEventData(response.events)
-        if(stats){
-          vm.data = stats.data
-          vm.labels = stats.labels
-        }
-        vm.initilaiseCalenders(statsFactory.getStartDate());
-      }, function(error){
-        console.log(error)
-      });
-
-
-   /*
-    * Initialise the calender with the calculated data
-    */
-    vm.initilaiseCalenders = function(afterDate) {
-      vm.minDate = afterDate;
-      vm.afterDate = new Date(afterDate);
-      vm.maxDate = new Date();
-      vm.beforeDate = vm.maxDate;
-      vm.status = {
-        opened: false,
-        openedTwo: false
+   vm.tabs = [{'title': 'Stats', 'content' : 'partials/user/punditStats.tpl.html'}];
+   vm.requiredData = {
+        all: vm.punditEvents,
+        filtered: vm.fltrEvents
       };
-    };
-
-  vm.continue = statsFactory.getContinueFunc(vm);
-
-
-
-
-
-   /**
-    * Controls the modal for this event when event is clicked by user
-    */
-    function EventModalCtrl($modalInstance, requiredData) {
-      ngDialog.close();
-      var vm = this;
-      vm.data = requiredData;
-      if(vm.data.runnerdata.Colors){
-          vm.data.colorSrc = vm.data.runnerdata.Colors;
-          delete vm.data.runnerdata.Colors;
-      }
-      if(vm.data.state === 'Winner') {
-        vm.alerts = [{
-            type: 'success',
-            msg: 'Winning bet! Total profit of ' + vm.data.adjustment + ' points !'}]
-      }
-      else if (vm.data.state === 'Loser') {
-        vm.alerts = [{
-            type: 'danger',
-            msg: 'Losing bet! Negative adjustment of ' + vm.data.adjustment + ' points !'}]
-      } else {
-        vm.alerts = [{
-            type: 'info',
-            msg: 'Result Pending! No results yet for this event!'}]
-      }
-
-      $modalInstance.close();
-
-      vm.closeAlert = function(index) {
-        vm.alerts.splice(index, 1);
-    };
-  };
-
-
-  function EventListCtrl(eventsAtDate) {
-    var vm = this;
-    vm.unfilteredEvents = eventsAtDate;
-    vm.events = $filter('publishedEvenFilter')(eventsAtDate);
-    vm.show = function(eventId) {
-    var requiredEvent = null;
-      for(var i = 0 ; i < vm.unfilteredEvents.length ; i++){
-        if(vm.unfilteredEvents[i].id === eventId) {
-          requiredEvent = vm.unfilteredEvents[i];
-          break;
-        }
-      }
-       $modal.open({
-            animation: true,
-            templateUrl: 'partials/modals/eventDetailed.html',
-            controller: ['$modalInstance', 'requiredData', EventModalCtrl],
-            controllerAs: 'vm',
-            size: 'lg',
-            resolve: {
-              requiredData: function () { return requiredEvent }
-            }
-          });
-    }
-  };
 
 }])
 

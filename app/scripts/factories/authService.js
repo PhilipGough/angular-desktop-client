@@ -29,12 +29,20 @@ angular.module('BetterBetting')
      * Return this private user data
      */
     authFactory.getUserData = function() {
-     return user;
+     if(Object.keys(user).length){
+        return user;
+     } else {
+        this.setUserData();
+        return this.getUserData();
+     }
     };
     /**
      * Set data for the current user
      */
     authFactory.setUserData = function(token) {
+      if(!token){
+        var token = this.getStoredToken();
+      }
       var parsedJWT = this.parseJWT(token);
       user.name = parsedJWT.name;
       user.id = parsedJWT.sub;

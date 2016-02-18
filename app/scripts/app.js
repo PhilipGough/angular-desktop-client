@@ -100,7 +100,7 @@ BetterBetting.config(function($stateProvider, $locationProvider,$httpProvider,
   });
 
   $httpProvider.interceptors.push('httpErrorResponseInterceptor');
-
+  $httpProvider.interceptors.push('httpNetErrorResponseInterceptor');
   //$httpProvider.defaults.withCredentials = true;
   //No states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/');

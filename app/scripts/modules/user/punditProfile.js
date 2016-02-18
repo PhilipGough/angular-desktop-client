@@ -9,8 +9,8 @@ angular.module('BetterBetting.user.punditProfile', [])
     url: '/profile/{punditId:int}',
     data : { title: 'Pundit Profile',
               css: ['bower_components/rdash-ui/dist/css/pundit.min.css',
-                    'bower_components/rdash-ui/dist/css/rdash.min.css']
-          },
+              'bower_components/rdash-ui/dist/css/rdash.min.css']
+    },
     views: {
       'layoutMainContent': {
         controller: 'PunditProfileCtrl',
@@ -25,11 +25,12 @@ angular.module('BetterBetting.user.punditProfile', [])
  * statistics graph.
  */
 .controller('PunditProfileCtrl', ['$stateParams', 'restFactory',
-                'statsFactory', '$modal', '$filter', '$timeout', 'ngDialog', '$scope',
+                'statsFactory', '$modal', '$filter', '$timeout', 'ngDialog', '$scope', 'authFactory',
                        function($stateParams, restFactory, statsFactory,
-                                        $modal, $filter, $timeout, ngDialog, $scope) {
+                                        $modal, $filter, $timeout, ngDialog, $scope, authFactory) {
     var vm = this;
     vm = statsFactory.initChart(vm);
+    vm.subscribed = false;
     vm.tabs = [
         {'title': 'Overview', 'content' : 'partials/user/punditOverview.tpl.html' },
         {'title': 'Stats', 'content' : 'partials/user/punditStats.tpl.html'}
@@ -147,6 +148,32 @@ angular.module('BetterBetting.user.punditProfile', [])
       */
     vm.pundit = restFactory.makeGetRequest('pundit/'+$stateParams.punditId)
       .then(function(response) {
+        var user = authFactory.getUserData();
+        console.log(response)
+        vm.punditName = response.username;
+        vm.punditOverview = {
+          'Active for' : ' '+(response.active_days).toString() + ' days',
+          'Average bets per day' : ' '+(response.active_days/response.events.length),
+          'Subscribers' : response.subscribed.length
+        }
+        var wins = 0;
+        var eventsSettled = 0;
+        for(var i = 0 ; i < response.events.length; i++) {
+          if(response.events[i].state !== 'Pending') {
+            eventsSettled += 1;
+            if(response.events[i].state === 'Winner'){
+              wins += 1;
+            }
+          }
+        }
+        console.log(eventsSettled, wins)
+        vm.punditOverview['Strike rate'] = ((wins /eventsSettled) * 100).toString() + '%'
+        for(var i=0 ; i< response.subscribed.length; i++){
+          if(user.id === response.subscribed[i].id){
+              vm.subscribed = true;
+              break;
+          }
+        }
         var stats = statsFactory.computeEventData(response.events)
         if(stats){
           vm.data = stats.data
@@ -164,7 +191,14 @@ angular.module('BetterBetting.user.punditProfile', [])
         'punditId' : $stateParams.punditId
       })
       .then(function (data) {
-        console.log(data);
+        vm.subscribed = true;
+      })
+    };
+
+    vm.deleteSubscription = function(){
+      restFactory.makeDeleteRequest('subscription/'+$stateParams.punditId)
+      .then(function (data) {
+        vm.subscribed = false;
       })
     };
 

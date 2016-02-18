@@ -19,6 +19,7 @@ angular.module('BetterBetting')
       var startDate = new Date(eventList[0].created_at);
       afterDate = angular.copy(startDate);
       var endDate = new Date();
+      endDate.setDate(endDate.getDate()+1);
       stats.populateLabels(startDate, endDate, initStatValues);
       angular.forEach(eventList, function(event) {
           if(!(event.state == 'Pending')){
@@ -153,7 +154,7 @@ angular.module('BetterBetting')
     vm.series = ['Outright', 'Football', 'Racing'];
     vm.colors = ['#b3b3cc', '#85adad', '#b3e6ff'];
     return vm;
-  }
+  };
 
 
   stats.getDict = function(){
