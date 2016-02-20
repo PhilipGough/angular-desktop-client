@@ -31,8 +31,8 @@ angular.module('BetterBetting.pundit', [])
 /**
  * Alter the css class and toggle sidebar function
  */
-.controller('PunditHomeCtrl', ['$scope', '$document',
-                                     function($scope, $document) {
+.controller('PunditHomeCtrl', ['$scope', '$document', '$state',
+                                     function($scope, $document, $state) {
     $scope.toggle = true;
     $document.find('body')[0].id = 'pundit';
 
@@ -57,6 +57,11 @@ angular.module('BetterBetting.pundit', [])
 
   $scope.toggled = function() {
     $scope.isToggled = ! $scope.isToggled;
+  };
+
+  $scope.logout = function() {
+      localStorage.removeItem('betterTradingToken');
+      $state.go('preAuth.home');
   };
 }])
 

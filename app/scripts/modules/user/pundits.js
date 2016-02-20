@@ -23,16 +23,18 @@ angular.module('BetterBetting.user.punditList', [])
 .controller('PunditListCtrl',[ 'restFactory', 'authFactory', function(restFactory, authFactory){
 
   var vm = this;
-  var userId = authFactory.getUserData();
+  var userId = authFactory.getUserData().id;
   restFactory.makeGetRequest('pundit')
   .then(function(response){
-    console.log(response);
     vm.pundits = response;
     angular.forEach(vm.pundits, function(pundit){
-      if(pundit.subscribed.id !== userId){
-        pundit.isSubscribed = true;
-      } else {
-        pundit.isSubscribed = false;
+      for(var i = 0 ; i < pundit.subscribed.length ; i++){
+         if(pundit.subscribed[i].id === userId){
+            pundit.isSubscribed = true;
+            break;
+         }else {
+            pundit.isSubscribed = false;
+          }
       }
     });
   },function(error){

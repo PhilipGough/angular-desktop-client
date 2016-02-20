@@ -15,7 +15,8 @@ angular.module('BetterBetting.home', [])
             var authStatus = authFactory.isAuthenticated();
             if(authStatus) {
               var user = authFactory.getUserData();
-              if(user.hasPermission === 'True'){
+              console.log(user)
+              if(user.hasPermission === 'True' || user.hasPermission === true){
                  $timeout(function() {
                     $state.go('pundit.dashboard');
                   },0);

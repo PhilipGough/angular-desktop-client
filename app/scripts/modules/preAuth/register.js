@@ -22,7 +22,7 @@ angular.module('BetterBetting.register', [])
    * Route user to correct state based on value in JWT
    */
   function routeUser(userData) {
-    if(userData.hasPermission === 'True'){
+    if(userData.hasPermission === 'True' || userData.hasPermission === true){
       $state.go('pundit.dashboard');
     }
     else {
@@ -44,6 +44,9 @@ angular.module('BetterBetting.register', [])
               localStorage.setItem('betterTradingToken', response);
               authFactory.setUserData(response);
               routeUser(authFactory.getUserData());
+            }, function(error){
+              var message = '<strong>Registration failed!</strong> Authentication issue ';
+              Flash.create('danger', message, 'custom-class');
             });
       })
       .error(function(response, status) {

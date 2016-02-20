@@ -77,7 +77,8 @@ angular.module('BetterBetting.user.punditProfile', [])
       restFactory.makePOSTrequest('subscription', {
         'punditId' : $stateParams.punditId
       })
-      .then(function (data) {
+      .then(function (response) {
+        console.log(response);
         vm.subscribed = true;
       });
     };

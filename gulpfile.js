@@ -114,9 +114,9 @@ function prepareTemplates () {
 };
 
 gulp.task('templates', function () {
-  return gulp.src('app/partials/**/*.tpl.html')
+  return gulp.src('app/**/*.tpl.html')
     .pipe(templateCache('templates.js'))
-    .pipe(gulp.dest('.tmp'));
+    .pipe(gulp.dest('app/scripts'));
 });
 
 // Scan Your HTML For Assets & Optimize Them
@@ -207,7 +207,7 @@ gulp.task('clean', ['cleantmp', 'cleandist', 'cleancordova']);
 
 // Build Production Files
 gulp.task('web', function (cb) {
-  runSequence(['clean'], ['styles'], ['templates'], ['jshint', 'copyServerSpecific', 'copyCommon', 'fonts', 'images'], ['html'], cb);
+  runSequence(['clean'], ['styles'], ['jshint', 'copyServerSpecific', 'copyCommon', 'fonts', 'images'], ['html'], cb);
 });
 
 
