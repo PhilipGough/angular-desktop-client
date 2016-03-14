@@ -48,6 +48,21 @@ angular.module('BetterBetting.pundit')
   };
 })
 
+
+.filter('publishedEventFilterTwo', function() {
+
+  return function(item) {
+  item.forEach(function(entry) {
+    if(entry.meta_data['Start Time']){
+      entry.start = entry.meta_data['Start Time']
+    }
+  })
+
+    return item;
+  };
+
+})
+
 .filter('range', function() {
   return function(input, min, max) {
     min = parseFloat(min); //Make string input int

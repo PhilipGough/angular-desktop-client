@@ -1,18 +1,16 @@
   <div class="row">
     <div class="col-md-6 col-lg-6">
       <u> Event/Market Details</u>
-        <div ng-repeat="data in vm.event.meta_data">
           <table>
-           <tr ng-repeat="(key, value) in data">
-            <td>{{key}}&nbsp;-&nbsp; </td> <td> {{value}}</td>
+           <tr ng-repeat="(key, value) in vm.event.meta_data">
+            <td>{{key}}&nbsp;&nbsp; </td> <td> {{value}}</td>
            </tr>
           </table>
-        </div>
     </div>
 
       <div class="col-md-6 col-lg-6">
         <div ng-if="vm.event.comment">
-          <h4><a ui-sref="user.punditProfile({punditId: vm.event.pundit.id})">Pundit &nbsp;-&nbsp; {{vm.event.pundit.username}}</a></h4>
+          <h4><a ui-sref="user.punditProfile({punditId: vm.event.pundit.id})">Pundit &nbsp;&nbsp; {{vm.event.pundit.username}}</a></h4>
           <div class="well">{{vm.event.comment}}</div>
         </div>
       </div>
@@ -26,7 +24,7 @@
       <u> Runner Details</u> <img ng-src="{{vm.event.colorSrc}}"/>
           <table>
             <tr ng-repeat="(key, value) in vm.event.runnerdata">
-                <td>{{key}}&nbsp;-&nbsp; </td> <td> {{value}}</td>
+                <td>{{key}}&nbsp;&nbsp; </td> <td> {{value}}</td>
             </tr>
           </table>
    </div>
@@ -34,7 +32,7 @@
       <u> Price Details</u>
           <table>
             <tr ng-repeat="(key, value) in vm.event.pricedata">
-                <td>{{key}}&nbsp;-&nbsp; </td> <td> {{value}}</td>
+                <td>{{key}}&nbsp;&nbsp; </td> <td> {{value}}</td>
             </tr>
           </table>
    </div>

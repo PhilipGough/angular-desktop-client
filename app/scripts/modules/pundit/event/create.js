@@ -79,6 +79,7 @@ angular.module('BetterBetting.pundit.createEvent', [])
     function CreateEventModalCtrl($modalInstance, requiredData) {
       var vm = this;
       vm.data = requiredData;
+      console.log(vm.data)
 
       vm.publishEvent = function() {
         betfairFactory.callAPIPost('event', vm.data)

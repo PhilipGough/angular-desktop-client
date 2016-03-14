@@ -81,7 +81,7 @@ angular.module('BetterBetting.pundit', [])
    vm.userRating = getPundit.rating;
    vm.subscriberNum = getPundit.subscribed.length;
    vm.subscribers = getPundit.subscribed;
-   vm.fltrEvents = $filter('publishedEvenFilter')(vm.punditEvents);
+   vm.fltrEvents = $filter('publishedEventFilterTwo')(vm.punditEvents);
    vm.hasUnseenEvents = false;
    vm.hasPendingEvents = false;
 

@@ -20,14 +20,14 @@
   }
 });
 })
- .controller('UserEventListCtrl',[ 'restFactory', '$filter', '$modal', function(restFactory, $filter, $modal){
+ .controller('UserEventListCtrl',[ 'restFactory', '$modal', function(restFactory, $modal){
 
   var vm = this;
   var request = restFactory.makeGetRequest('event')
   .then(function(response){
     console.log(response);
     vm.allData = response;
-    vm.fltrEvents = $filter('publishedEvenFilter')(response);
+    vm.fltrEvents = (response);
   },function(error){
 
   });

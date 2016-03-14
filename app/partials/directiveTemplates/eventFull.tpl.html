@@ -16,12 +16,13 @@
         <th><a href="" ng-click="orderByField='state'; reverseSort = !reverseSort">Result</a></th>
       </tr>
     </thead>
-      <tbody  dir-paginate="event in vm.fltrEvents | filter:vm.q |itemsPerPage:6|orderBy:orderByField:reverseSort" ng-click="vm.show(event)">
+      <tbody  dir-paginate="event in vm.punditEvents | filter:vm.q |itemsPerPage:6|orderBy:orderByField:reverseSort" ng-click="vm.show(event)">
+      {{event}}
       <tr>
-        <td>{{event.event}}</td>
-        <td>{{event.startTime}}</td>
-        <td>{{event.market}}</td>
-        <td>{{event.selection}}</td>
+        <td>{{event.meta_data.Event}}</td>
+        <td>{{event.start}}</td>
+        <td>{{event.meta_data.Market}}</td>
+        <td>{{event.meta_data.Selection}}</td>
         <td>{{event.state}}</td>
       </tr>
     </tbody>

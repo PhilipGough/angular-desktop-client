@@ -19,7 +19,7 @@
                   $location.path('/404');
                   break;
                   default:
-                  $location.path('/');
+                  break;
                 }
 
                 return $q.reject(response);

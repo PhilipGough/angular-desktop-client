@@ -26,10 +26,10 @@ angular.module('BetterBetting.pundit.viewEventList', [])
  if(vm.punditEvents.length === 0) {
       restFactory.makeGetRequest('event').then(function(data){
         vm.punditEvents = data;
-         vm.fltrEvents = $filter('publishedEvenFilter')(vm.punditEvents);
+        vm.fltrEvents = $filter('publishedEventFilterTwo')(vm.punditEvents);
       });
  } else {
-   vm.fltrEvents = $filter('publishedEvenFilter')(vm.punditEvents);
+   vm.fltrEvents = $filter('publishedEventFilterTwo')(vm.punditEvents);
  }
 
   /**

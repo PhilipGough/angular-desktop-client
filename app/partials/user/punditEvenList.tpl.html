@@ -16,10 +16,10 @@
     </thead>
     <tbody ng-repeat="event in vm.events | orderBy:orderByField:reverseSort" ng-click="vm.show(event.id)">
       <tr>
-        <td>{{event.event}}</td>
-        <td>{{event.startTime}}</td>
-        <td>{{event.market}}</td>
-        <td>{{event.selection}}</td>
+        <td>{{event.meta_data.Event}}</td>
+        <td>{{event.meta_data['Start Time']}}</td>
+        <td>{{event.meta_data.Market}}</td>
+        <td>{{event.meta_data.Selection}}</td>
         <td>{{event.state}}</td>
       </tr>
     </tbody>

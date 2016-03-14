@@ -38,7 +38,6 @@ angular.module('BetterBetting')
     */
     vm.pundit = restFactory.makeGetRequest('pundit/'+ vm.resource)
     .then(function(response) {
-      console.log(response);
       var stats = statsFactory.computeEventData(response.events);
       if(stats){
         vm.data = stats.data;
@@ -66,7 +65,6 @@ angular.module('BetterBetting')
      */
     vm.continue = function() {
       statsFactory.populateLabels(vm.afterDate, vm.beforeDate);
-      console.log('Here no problem')
       vm.series = [];
       vm.colors = [];
       var stats = statsFactory.populateData();

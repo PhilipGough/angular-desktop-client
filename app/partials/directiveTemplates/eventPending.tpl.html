@@ -12,10 +12,10 @@
     </thead>
     <tbody ng-repeat="event in vm.fltrEvents | filter:{state:'Pending'} | orderBy:orderByField:reverseSort" ng-click="vm.show(event)">
       <tr>
-        <td>{{event.event}}</td>
-        <td>{{event.startTime}}</td>
-        <td>{{event.market}}</td>
-        <td>{{event.selection}}</td>
+        <td>{{event.meta_data.Event}}</td>
+        <td>{{event.meta_data['Start Time']}}</td>
+        <td>{{event.meta_data.Market}}</td>
+        <td>{{event.meta_data.Selection}}</td>
         <td><a ui-sref="user.punditProfile({punditId: event.pundit.id})">{{event.pundit.username}}</a></td>
       </tr>
     </tbody>

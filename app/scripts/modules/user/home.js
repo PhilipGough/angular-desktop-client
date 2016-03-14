@@ -71,8 +71,7 @@
       } else {
         vm.addAlert('There are no pending events!', 'danger');
       }
-      vm.fltrEvents = $filter('publishedEvenFilter')(pendingResults);
-
+      vm.fltrEvents = pendingResults;
       // Hit the Redis server to find which of these events havent been seen before
       restFactory.makeGetRequest('events/unseen')
         .then(function(data){
@@ -95,7 +94,7 @@
             // Send the required data to the directive
             vm.requiredData = {
               all: allData,
-              filtered: vm.fltrEvents
+              filtered: pendingResults
             };
             vm.dataReady = true;
         });

@@ -4,8 +4,8 @@
         <h2>Login</h2>
         <form name="form" novalidate ng-submit="form.$valid && login(user)" role="form">
           <div class="form-group" ng-class="{ 'has-error':(form.email.$touched || form.$submitted) && form.email.$invalid }">
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" class="form-control" ng-model="user.email" required />
+            <label for="email">Login with Email Address or Username</label>
+            <input type="text" name="email" id="email" class="form-control" ng-model="user.email" required />
             <div class="help-block" ng-messages="form.email.$error" ng-if="form.email.$touched || form.$submitted">
                 <p ng-message="email">You have not entered a valid email address!</p>
                 <p ng-message="required">Email is required</p>

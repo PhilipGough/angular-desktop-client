@@ -16,6 +16,7 @@ angular.module('BetterBetting')
     for(var i = 0 ; i < vm.eventData.all.length ; i++) {
         if(vm.eventData.all[i].id === event.id) {
             var requiredData = vm.eventData.all[i];
+            console.log(requiredData)
             break;
         }
     }
@@ -28,6 +29,7 @@ angular.module('BetterBetting')
       size: 'lg',
       resolve: {
         requiredData: function () {
+          console.log(requiredData)
           return requiredData;
         }
       }

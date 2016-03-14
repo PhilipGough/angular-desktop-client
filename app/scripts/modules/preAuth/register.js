@@ -38,7 +38,6 @@ angular.module('BetterBetting.register', [])
         $scope.dataLoading = true;
         RegistrationFactory.userRegistration(user)
         .success(function(response) {
-          console.log(response);
            authFactory.getAuthToken(user.email, user.password)
             .success(function(response) {
               localStorage.setItem('betterTradingToken', response);
@@ -74,8 +73,8 @@ angular.module('BetterBetting.register', [])
                 function($http, $rootScope) {
 
   var regFactory = {};
-
   regFactory.userRegistration = function(user) {
+    console.log(user)
     return $http({
           method: 'post',
           url: $rootScope.baseURL +'user',

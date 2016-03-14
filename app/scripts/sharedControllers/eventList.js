@@ -7,7 +7,7 @@ angular.module('BetterBetting')
 
   var vm = this;
   vm.unfilteredEvents = eventsAtDate;
-  vm.events = $filter('publishedEvenFilter')(eventsAtDate);
+  vm.events = (eventsAtDate);
   vm.show = function(eventId) {
     var requiredEvent = null;
     for(var i = 0 ; i < vm.unfilteredEvents.length ; i++){

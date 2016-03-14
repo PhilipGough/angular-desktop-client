@@ -137,21 +137,24 @@ angular.module('BetterBetting.pundit')
   eventService.buildPublishEvent = function(eventData) {
     var polishedObj = {};
     var eventType = eventData.selectedMarket.eventType.id;
-    polishedObj.metaData = [];
 
-    if(eventType === '1') {
-      polishedObj.metaData.push({'Competition' : eventData.selectedMarket.competition.name});
+
+    var metaObj = {
+      'Selection' : eventData.selectedResult.runnerName,
+      'Event' : eventData.selectedMarket.event.name,
+      'Start Time' : $filter('date')(eventData.selectedMarket.marketStartTime, 'd/M/yy h:mm a', 'GMT'),
+      'Market' : eventData.selectedMarket.marketName,
+      'Bet Type' : eventData.setChoice,
+      'Points Recommended' : eventData.setStake
     }
 
-    polishedObj.metaData.push({'Selection' : eventData.selectedResult.runnerName});
-    polishedObj.metaData.push({ 'Event' : eventData.selectedMarket.event.name});
-    polishedObj.metaData.push({'Start Time' : $filter('date')(eventData.selectedMarket.marketStartTime, 'd/M/yy h:mm a', 'GMT')});
-    polishedObj.metaData.push({'Market' : eventData.selectedMarket.marketName});
-    polishedObj.metaData.push({ 'Bet Type' : eventData.setChoice});
-    polishedObj.metaData.push({ 'Points Recommended' : eventData.setStake});
+    if(eventType === '1') {
+      //polishedObj.metaData.push({'Competition' : eventData.selectedMarket.competition.name});
+      metaObj.Competition = eventData.selectedMarket.competition.name
+    }
 
     if(eventType === '7') {
-      polishedObj.metaData[1]['Event'] = eventData.selectedMarket.event.venue;
+      metaObj['Event'] = eventData.selectedMarket.event.venue;
       var run = eventData.selectedResult.metadata;
       polishedObj.runnerData = {
         'Age' : run.AGE,
@@ -170,7 +173,7 @@ angular.module('BetterBetting.pundit')
       'marketId' : eventData.selectedMarket.marketId,
       'eventId' : eventData.selectedMarket.event.id
     };
-
+    polishedObj.metaData = metaObj;
     return polishedObj;
   };
   /**
