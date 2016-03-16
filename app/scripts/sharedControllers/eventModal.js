@@ -7,7 +7,7 @@ angular.module('BetterBetting')
     ngDialog.close();
     var vm = this;
     vm.data = requiredData;
-
+  console.log(vm)
     if(vm.data.runnerdata.Colors){
           vm.data.colorSrc = vm.data.runnerdata.Colors;
           delete vm.data.runnerdata.Colors;

@@ -12,7 +12,13 @@ angular.module('BetterBetting')
 .directive('eventUnseen', function() {
     var directive = {
         restrict: 'AE',
-        templateUrl: 'partials/directiveTemplates/eventUnseen.tpl.html'
+        templateUrl: 'partials/directiveTemplates/eventUnseen.tpl.html',
+        scope: {
+            eventData: '=input'
+        },
+        controller: 'PendingEventController',
+        controllerAs: 'vm',
+        bindToController: true
     };
     return directive;
 })

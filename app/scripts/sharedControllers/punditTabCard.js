@@ -5,7 +5,6 @@ angular.module('BetterBetting')
 
   var vm = this;
   vm.format = 'dd-MMMM-yyyy';
-  vm.loading = true;
   vm.series = ['Outright', 'Football', 'Racing'];
   vm.colors = ['#b3b3cc', '#85adad', '#b3e6ff'];
   vm.loading = true;

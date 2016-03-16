@@ -9,7 +9,6 @@ angular.module('BetterBetting')
    * Allows user to click an area of chart
    * @param  {event} event - Mouse click event
    */
-
    vm.fltrEvents = vm.eventData.filtered;
    vm.show = function(event) {
 
