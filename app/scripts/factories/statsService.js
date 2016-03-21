@@ -98,7 +98,7 @@ angular.module('BetterBetting')
   };
 
   stats.getStartDate = function() {
-    return afterDate;
+    return afterDate || new Date();
   };
 
   stats.getDict = function(){

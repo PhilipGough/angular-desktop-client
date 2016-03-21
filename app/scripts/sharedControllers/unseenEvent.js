@@ -18,7 +18,16 @@ angular.module('BetterBetting')
   vm.colors = ['#b3b3cc', '#85adad', '#b3e6ff'];
   vm.chartData = [];
   vm.labels = [];
+
+  vm.priceInfo = {};
   var pricedata = angular.fromJson(vm.event.pricedata);
+
+  if(pricedata[0]) {
+      vm.priceInfo['Initial Odds'] = pricedata[0].price;
+      vm.priceInfo['Best Price'] = 0;
+      vm.priceInfo['Last Available Odds'] = pricedata[pricedata.length-1].price;
+  }
+
   var odds = [];
   var exBet = [];
   var exLay = [];
