@@ -38,8 +38,7 @@
  * Main controller on homepage. Handles pagination and GET request to the API
  * for a list of pundits
  */
- .controller('UserMainCtrl', ['restFactory', '$state', '$modal', '$filter',
-                    function(restFactory, $state, $modal, $filter) {
+ .controller('UserMainCtrl', ['restFactory', function(restFactory) {
     var vm = this;
     vm.dataReady = false;
     vm.alerts = [];
@@ -98,7 +97,7 @@
             };
             vm.dataReady = true;
         });
-  }, function(error){
+  }, function() {
     // HTTP Request to server has failed
        vm.addAlert('There was a problem accessing data!', 'danger');
   });

@@ -107,16 +107,10 @@ gulp.task('preprocessDev', function(){
     .pipe($.size());
 });
 
-function prepareTemplates () {
-  return gulp.src('app/partials/**/*.tpl.html')
-    .pipe(templateCache())
-    .pipe(gulp.dest(config.get('build_destination')+'/scripts'));
-};
-
 gulp.task('templates', function () {
-  return gulp.src('app/**/*.tpl.html')
-    .pipe(templateCache('templates.js'))
-    .pipe(gulp.dest('app/scripts'));
+  return gulp.src('dist/partials/**/*.tpl.html')
+    .pipe(templateCache('templatesXXX.js',{root:'partials/'}))
+    .pipe(gulp.dest('dist/scripts'));
 });
 
 // Scan Your HTML For Assets & Optimize Them
@@ -147,7 +141,7 @@ gulp.task('html', function () {
     .pipe($.if('*.html', $.minifyHtml()))
     // Output Files
     //prepareTemplates()
-    //.pipe($.angularTemplatecache())
+    //.pipe($.angularTemplatecache(config.get('build_destination')+'/scripts',{}))
     .pipe(gulp.dest(config.get('build_destination')))
     .pipe($.size({title: 'html'}));
 });
@@ -205,11 +199,10 @@ gulp.task('cleancordova', function(cb){
 gulp.task('clean', ['cleantmp', 'cleandist', 'cleancordova']);
 
 
-// Build Production Files
 gulp.task('web', function (cb) {
-  runSequence(['clean'], ['styles'], ['jshint', 'copyServerSpecific', 'copyCommon', 'fonts', 'images'], ['html'], cb);
+  runSequence(['clean'], ['styles'], ['jshint', 'copyServerSpecific', 'copyCommon', 'fonts', 'images'],
+               ['html'], ['templates'], cb);
 });
-
 
 //Build Cordova(Mobile) Apps
 gulp.task('mobile', function (cb) {

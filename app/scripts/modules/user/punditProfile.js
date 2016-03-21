@@ -55,7 +55,7 @@ angular.module('BetterBetting.user.punditProfile', [])
           }
         }
 
-        vm.punditOverview['Strike rate'] = ((wins /eventsSettled) * 100).toString() + '%';
+        vm.punditOverview['Strike rate'] = ((wins /eventsSettled) * 100).toFixed(2).toString() + '%';
         for(i=0 ; i< response.subscribed.length; i++){
           if(user.id === response.subscribed[i].id){
               vm.subscribed = true;
@@ -85,7 +85,7 @@ angular.module('BetterBetting.user.punditProfile', [])
 
     vm.deleteSubscription = function(){
       restFactory.makeDeleteRequest('subscription/'+$stateParams.punditId)
-      .then(function (data) {
+      .then(function() {
         vm.subscribed = false;
       });
     };

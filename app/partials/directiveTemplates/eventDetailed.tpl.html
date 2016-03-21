@@ -9,9 +9,9 @@
     </div>
 
       <div class="col-md-6 col-lg-6">
-        <div ng-if="vm.event.comment">
+        <div>
           <h4><a ui-sref="user.punditProfile({punditId: vm.event.pundit.id})">Pundit &nbsp;&nbsp; {{vm.event.pundit.username}}</a></h4>
-          <div class="well">{{vm.event.comment}}</div>
+          <div ng-if="vm.event.comment" class="well">{{vm.event.comment}}</div>
         </div>
       </div>
 

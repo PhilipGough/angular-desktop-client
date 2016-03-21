@@ -1,0 +1,15 @@
+<div class="modal-header">
+  <h3 class="modal-title">Event Details</h3>
+  <alert data-ng-repeat="alert in vm.alerts" type="{{alert.type}}" close="vm.closeAlert($index)">{{alert.msg}}</alert>
+      <tabset>
+        <tab ng-repeat="tab in vm.tabs" heading="{{tab.title}}" active="tab.active" disable="tab.disabled">
+          <div ng-include="tab.content"></div>
+        </tab>
+      </tabset>
+</div>
+
+
+
+<div class="modal-footer">
+  <button class="btn" ng-click="$close()">Close</button>
+</div>

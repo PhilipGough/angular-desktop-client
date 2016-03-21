@@ -16,7 +16,7 @@
         <th><a href="" ng-click="orderByField='state'; reverseSort = !reverseSort">Result</a></th>
       </tr>
     </thead>
-      <tbody  dir-paginate="event in vm.fltrEvents | filter:vm.q |itemsPerPage:6|orderBy:orderByField:reverseSort" ng-click="vm.show(event)">
+      <tbody  dir-paginate="event in vm.fltrEvents | filter:vm.q |itemsPerPage:10|orderBy:orderByField:reverseSort" ng-click="vm.show(event)">
       <tr>
         <td>{{event.meta_data.Event}}</td>
         <td>{{event.meta_data['Start Time']}}</td>

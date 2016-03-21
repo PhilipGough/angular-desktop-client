@@ -1,7 +1,4 @@
 'use strict';
-angular.module('BetterBetting')
-
-.directive('punditTabCard', punditTabCard);
 
 function punditTabCard() {
     var directive = {
@@ -18,5 +15,9 @@ function punditTabCard() {
 
     return directive;
 }
+
+angular.module('BetterBetting')
+.directive('punditTabCard', punditTabCard);
+
 
 

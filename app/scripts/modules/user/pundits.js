@@ -38,7 +38,7 @@ angular.module('BetterBetting.user.punditList', [])
       }
     });
   },function(error){
-
+    console.log(error);
   });
 
   vm.paginationController = function(){

@@ -54,9 +54,9 @@ angular.module('BetterBetting.pundit')
   return function(item) {
   item.forEach(function(entry) {
     if(entry.meta_data['Start Time']){
-      entry.start = entry.meta_data['Start Time']
+      entry.start = entry.meta_data['Start Time'];
     }
-  })
+  });
 
     return item;
   };

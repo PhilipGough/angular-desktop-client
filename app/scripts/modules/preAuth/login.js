@@ -21,8 +21,7 @@ angular.module('BetterBetting.login', [])
    * Route user to correct app based on permission
    */
   function routeUser(userData) {
-    console.log(userData);
-    if(userData.hasPermission == true){
+    if(userData.hasPermission === true){
       $state.go('pundit.dashboard');
     }
     else {

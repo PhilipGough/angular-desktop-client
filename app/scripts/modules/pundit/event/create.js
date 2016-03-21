@@ -79,11 +79,10 @@ angular.module('BetterBetting.pundit.createEvent', [])
     function CreateEventModalCtrl($modalInstance, requiredData) {
       var vm = this;
       vm.data = requiredData;
-      console.log(vm.data)
 
       vm.publishEvent = function() {
         betfairFactory.callAPIPost('event', vm.data)
-        .then(function(data) {
+        .then(function() {
           $state.go('pundit.dashboard');
         }, function(error) {
           console.log(error);
@@ -100,7 +99,7 @@ angular.module('BetterBetting.pundit.createEvent', [])
       var requiredData = eventFactory.buildPublishEvent(vm);
       $modal.open({
       animation: true,
-      templateUrl: 'partials/modals/eventModal.html',
+      templateUrl: 'partials/modals/eventModal.tpl.html',
       controller: ['$modalInstance', 'requiredData', CreateEventModalCtrl],
       controllerAs: 'vm',
       size: 'lg',

@@ -23,12 +23,11 @@
  .controller('UserEventListCtrl',[ 'restFactory', '$modal', function(restFactory, $modal){
 
   var vm = this;
-  var request = restFactory.makeGetRequest('event')
+  restFactory.makeGetRequest('event')
   .then(function(response){
-    console.log(response);
     vm.allData = response;
     vm.fltrEvents = (response);
-  },function(error){
+  },function() {
 
   });
 
@@ -47,7 +46,7 @@
 
     $modal.open({
       animation: true,
-      templateUrl: 'partials/modals/eventDetailed.html',
+      templateUrl: 'partials/modals/eventDetailed.tpl.html',
       controller: 'EventModalCtrl',
       controllerAs: 'vm',
       size: 'lg',

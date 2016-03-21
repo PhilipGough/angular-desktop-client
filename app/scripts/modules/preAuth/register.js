@@ -37,7 +37,7 @@ angular.module('BetterBetting.register', [])
     if(user.password === user.password2){
         $scope.dataLoading = true;
         RegistrationFactory.userRegistration(user)
-        .success(function(response) {
+        .success(function() {
            authFactory.getAuthToken(user.email, user.password)
             .success(function(response) {
               localStorage.setItem('betterTradingToken', response);
@@ -45,13 +45,14 @@ angular.module('BetterBetting.register', [])
               routeUser(authFactory.getUserData());
             }, function(error){
               var message = '<strong>Registration failed!</strong> Authentication issue ';
+              console.log(error);
               Flash.create('danger', message, 'custom-class');
             });
       })
       .error(function(response, status) {
         var message = '<strong>Registration failed!</strong> ' + response.error_message;
         Flash.create('danger', message, 'custom-class');
-        console.log('The request failed with response - ' + response.error_message + 'and status code ' + status);
+        console.log('The request failed with response - ' + response.error_message + ' status code ' + status);
         $scope.dataLoading = false;
       });
 
@@ -74,7 +75,6 @@ angular.module('BetterBetting.register', [])
 
   var regFactory = {};
   regFactory.userRegistration = function(user) {
-    console.log(user)
     return $http({
           method: 'post',
           url: $rootScope.baseURL +'user',

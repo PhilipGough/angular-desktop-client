@@ -18,7 +18,7 @@ angular.module('BetterBetting')
     }
     $modal.open({
       animation: true,
-      templateUrl: 'partials/modals/eventDetailed.html',
+      templateUrl: 'partials/modals/eventDetailed.tpl.html',
       controller: 'EventModalCtrl',
       controllerAs: 'vm',
       size: 'lg',

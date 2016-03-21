@@ -146,15 +146,15 @@ angular.module('BetterBetting.pundit')
       'Market' : eventData.selectedMarket.marketName,
       'Bet Type' : eventData.setChoice,
       'Points Recommended' : eventData.setStake
-    }
+    };
 
     if(eventType === '1') {
       //polishedObj.metaData.push({'Competition' : eventData.selectedMarket.competition.name});
-      metaObj.Competition = eventData.selectedMarket.competition.name
+      metaObj.Competition = eventData.selectedMarket.competition.name;
     }
 
     if(eventType === '7') {
-      metaObj['Event'] = eventData.selectedMarket.event.venue;
+      metaObj.Event = eventData.selectedMarket.event.venue;
       var run = eventData.selectedResult.metadata;
       polishedObj.runnerData = {
         'Age' : run.AGE,

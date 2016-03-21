@@ -15,20 +15,18 @@ angular.module('BetterBetting')
     for(var i = 0 ; i < vm.eventData.all.length ; i++) {
         if(vm.eventData.all[i].id === event.id) {
             var requiredData = vm.eventData.all[i];
-            console.log(requiredData)
             break;
         }
     }
 
     $modal.open({
       animation: true,
-      templateUrl: 'partials/modals/eventDetailed.html',
+      templateUrl: 'partials/modals/eventDetailed.tpl.html',
       controller: 'EventModalCtrl',
       controllerAs: 'vm',
       size: 'lg',
       resolve: {
         requiredData: function () {
-          console.log(requiredData)
           return requiredData;
         }
       }
