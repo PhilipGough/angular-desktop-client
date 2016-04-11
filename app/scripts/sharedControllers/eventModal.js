@@ -51,17 +51,21 @@ angular.module('BetterBetting')
 
               var pricedata = angular.fromJson(vm.data.pricedata);
               if(pricedata[0]) {
-                vm.priceInfo['Initial Odds'] = pricedata[0].price;
+                console.log(pricedata)
+                vm.priceInfo['Initial Odds'] = pricedata[0].price || pricedata[0]['Exchange Back'];
                 vm.priceInfo['Best Price'] = 0;
-                vm.priceInfo['Last Available Odds'] = pricedata[pricedata.length-1].price;
+                vm.priceInfo['Last Available Odds'] = pricedata[pricedata.length-1].price || pricedata[pricedata.length-1]['Exchange Back'];
             }
               var odds = [];
               var exBet = [];
               var exLay = [];
-              console.log(pricedata)
               angular.forEach(pricedata, function(value) {
-                if(value.price > vm.priceInfo['Best Price']) {
+                if(value.price && value.price > vm.priceInfo['Best Price']) {
                   vm.priceInfo['Best Price'] = value.price;
+                } else {
+                  if(value['Exchange Back'] && value['Exchange Back']> vm.priceInfo['Best Price']) {
+                  vm.priceInfo['Best Price'] = value['Exchange Back']
+                  }
                 }
                 if(value.price) {
                   odds.push(value.price);
