@@ -47,25 +47,43 @@ angular.module('BetterBetting')
               vm.labels = [];
               vm.priceInfo = {};
 
+              var hasBookmakerData = true;
+
               var pricedata = angular.fromJson(vm.data.pricedata);
               if(pricedata[0]) {
-              vm.priceInfo['Initial Odds'] = pricedata[0].price;
-              vm.priceInfo['Best Price'] = 0;
-              vm.priceInfo['Last Available Odds'] = pricedata[pricedata.length-1].price;
+                vm.priceInfo['Initial Odds'] = pricedata[0].price;
+                vm.priceInfo['Best Price'] = 0;
+                vm.priceInfo['Last Available Odds'] = pricedata[pricedata.length-1].price;
             }
               var odds = [];
               var exBet = [];
               var exLay = [];
+              console.log(pricedata)
               angular.forEach(pricedata, function(value) {
                 if(value.price > vm.priceInfo['Best Price']) {
                   vm.priceInfo['Best Price'] = value.price;
                 }
-                odds.push(value.price);
+                if(value.price) {
+                  odds.push(value.price);
+                } else {
+                  hasBookmakerData = false;
+                }
                 exBet.push(value['Exchange Back']);
                 exLay.push(value['Exchange Lay']);
                 vm.labels.push(value.time);
               });
-              vm.chartData.push(odds, exBet, exLay);
+
+              if(hasBookmakerData) {
+                vm.chartData.push(odds, exBet, exLay);
+              } else {
+                modifyChart();
+              }
+
+    function modifyChart() {
+      vm.series.shift();
+      vm.colors.shift();
+      vm.chartData.push(exBet, exLay);
+    }
 
 
     /*
