@@ -51,7 +51,6 @@ angular.module('BetterBetting')
 
               var pricedata = angular.fromJson(vm.data.pricedata);
               if(pricedata[0]) {
-                console.log(pricedata)
                 vm.priceInfo['Initial Odds'] = pricedata[0].price || pricedata[0]['Exchange Back'];
                 vm.priceInfo['Best Price'] = 0;
                 vm.priceInfo['Last Available Odds'] = pricedata[pricedata.length-1].price || pricedata[pricedata.length-1]['Exchange Back'];
