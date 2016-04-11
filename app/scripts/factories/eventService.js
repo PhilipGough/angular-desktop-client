@@ -142,7 +142,7 @@ angular.module('BetterBetting.pundit')
     var metaObj = {
       'Selection' : eventData.selectedResult.runnerName,
       'Event' : eventData.selectedMarket.event.name,
-      'Start Time' : $filter('date')(eventData.selectedMarket.marketStartTime, 'd/M/yy h:mm a', 'GMT'),
+      'Start Time' : $filter('date')(eventData.selectedMarket.marketStartTime, 'd/M/yy h:mm a'),
       'Market' : eventData.selectedMarket.marketName,
       'Bet Type' : eventData.setChoice,
       'Points Recommended' : eventData.setStake
